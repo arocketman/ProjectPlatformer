@@ -27,7 +27,7 @@ import org.platformer.utils.AABB;
 import org.platformer.utils.RenderUtils;
 import org.platformer.world.chunk.Chunk;
 
-public class WorldClient extends World
+public class WorldClient extends WorldServer
 {
 	private Image terrain = RegisterTextures.getTexture("terrain");
 	private EntityPlayer localPlayer;
@@ -48,12 +48,13 @@ public class WorldClient extends World
 		camera = new Camera(4f,0.05f);
 		camera.translateX = 0;
 		camera.translateY = 0;
+		super.init();
 	}
 	
 	@Override
 	public void update()
 	{
-		updateEntities();
+		super.update();
 		
 		if(Mouse.isButtonDown(0)) clickMouse(0);
 		if(Mouse.isButtonDown(1)) clickMouse(1);
@@ -93,6 +94,7 @@ public class WorldClient extends World
 		renderEntities(g);
 		renderChunks(g);
 		g.resetTransform();
+		super.render(g);
 	}
 	
 	/**
