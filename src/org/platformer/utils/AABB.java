@@ -23,6 +23,11 @@ public class AABB
 		this.maxY = (height/2f);
 	}
 	
+	/**
+	 * Check if this AABB is intersecting the other AABB
+	 * @param other - Other AABB
+	 * @return true if intersects
+	 */
 	public boolean intersects(AABB other)
 	{
 		float sizeX = getWidth();
@@ -39,6 +44,11 @@ public class AABB
 		return false;
 	}
 	
+	/**
+	 * Check if this AABB plus its motion is intersecting the other AABB
+	 * @param other - Other AABB
+	 * @return true if intersects if it had motion
+	 */
 	public boolean intersectsMotion(AABB other, float motionX, float motionY)
 	{
 		float sizeX = getWidth();
@@ -55,36 +65,66 @@ public class AABB
 		return false;
 	}
 	
+	/**
+	 * Get the full width of this AABB
+	 * @return Full Width
+	 */
 	public float getWidth()
 	{
 		return Math.abs(minX)+maxX;
 	}
 	
+	/**
+	 * Get the full height of this AABB
+	 * @return Full Height
+	 */
 	public float getHeight()
 	{
 		return Math.abs(minY)+maxY;
 	}
 	
+	/**
+	 * Get the minX with the aabb's position added to it
+	 * @return
+	 */
 	public float getMinXWP()
 	{
 		return posX+minX;
 	}
 	
+	/**
+	 * Get the minY with the aabb's position added to it
+	 * @return
+	 */
 	public float getMinYWP()
 	{
 		return posY+minY;
 	}
 	
+	/**
+	 * Get the maxX with the aabb's position added to it
+	 * @return
+	 */
 	public float getMaxXWP()
 	{
 		return posX+maxX;
 	}
 	
+	/**
+	 * Get the maxY with the aabb's position added to it
+	 * @return
+	 */
 	public float getMaxYWP()
 	{
 		return posY+maxY;
 	}
 
+	/**
+	 * Detects Collision before applying the motion
+	 * @param entity - Entity
+	 * @param motionX - Motion X
+	 * @param motionY - Motion Y
+	 */
 	public void applyMotion(Entity entity, float motionX, float motionY)
 	{
 		entity.onGround = false;
@@ -182,5 +222,17 @@ public class AABB
 				posY+=((posY-otherCol.posY)/32f)-0.25f;
 			}
 		}
+	}
+
+	/**
+	 * Makes a new duplicate instance of this AABB
+	 * @return Duplicate AABB
+	 */
+	public AABB duplicate()
+	{
+		AABB aabb = new AABB(minX,minY,maxX,maxY);
+		aabb.posX = posX;
+		aabb.posY = posY;
+		return aabb;
 	}
 }
