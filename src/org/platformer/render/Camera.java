@@ -83,11 +83,12 @@ public class Camera
 		
 		scale = Math.max(Math.min(scale, maxScale), minScale);
 
-	
+		/** Translate the camera to the middle, scale it from the middle, and translate it back*/
 		g.translate(halfWidth, halfHeight);
 		g.scale(scaleSmooth, scaleSmooth);
 		g.translate(-halfWidth, -halfHeight);
 		
+		/** Translate the camera position to 'move' the world*/
 		g.translate(-translateXSmooth, -translateYSmooth);
 	}
 }

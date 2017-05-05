@@ -8,6 +8,11 @@ import static org.lwjgl.opengl.GL11.glVertex2f;
 
 public class RenderUtils
 {
+	/**
+	 * Draw a quad with given position and uv values
+	 * @param pos - Position Array[4]{x,y,x1,y1}
+	 * @param uv - Texture UV Array[4]{x,y,x1,y1}
+	 */
 	public static void drawTexturedQuad(float[] pos, float[] uv)
 	{
 		glBegin(GL_QUADS);
