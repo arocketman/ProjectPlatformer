@@ -1,6 +1,11 @@
 package org.platformer.world;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glCallList;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glEndList;
+import static org.lwjgl.opengl.GL11.glGenLists;
+import static org.lwjgl.opengl.GL11.glNewList;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -13,6 +18,7 @@ import org.platformer.Main;
 import org.platformer.block.Block;
 import org.platformer.entity.Entity;
 import org.platformer.entity.EntityPlayer;
+import org.platformer.entity.EntityPlayerLocal;
 import org.platformer.entity.EntityTracker;
 import org.platformer.entity.EntityTracker.Map;
 import org.platformer.register.RegisterBlocks;
@@ -66,7 +72,7 @@ public class World implements IDefaultGame
 		
 		if(!isServer)
 		{
-			localPlayer = new EntityPlayer(this,"test");
+			localPlayer = new EntityPlayerLocal(this,"Username");
 		}
 	}
 
@@ -77,6 +83,7 @@ public class World implements IDefaultGame
 		{
 			ent.update();
 		}
+		
 		if(Mouse.isButtonDown(0))
 		{
 			clickMouse(0);
@@ -137,11 +144,8 @@ public class World implements IDefaultGame
 	
 	private void renderChunks(Graphics g)
 	{
-		g.setAntiAlias(false);
-		if(glGenList == -99)
-		{
-			glGenList = glGenLists(1024);
-		}
+		if(glGenList == -99)glGenList = glGenLists(1024);
+
 		boolean firstClear = true;
 		for(int i=0;i<chunks.length;i++)
 		{
@@ -199,15 +203,6 @@ public class World implements IDefaultGame
 						terrain.bind();
 						glCallList(glGenList+i);
 					}
-					
-					for(int a=0;a<chunks[i].blocks.length;a++)
-					{
-						AABB box = chunks[i].aabbPool[a];
-						if(box != null)
-						{
-							//g.drawRect(box.posX-(box.getWidth()/2f), box.posY-(box.getHeight()/2f), box.getWidth(), box.getHeight());
-						}
-					}
 				}
 				else
 				{
@@ -245,7 +240,10 @@ public class World implements IDefaultGame
 		{
 			Entity ent = (Entity) o;
 			RenderEntity re = RegisterRenders.getRenderer(ent.getClass());
-			if(re != null){re.render(ent, g);}
+			if(re != null)
+			{
+				re.render(ent, g);
+			}
 		}
 	}
 
@@ -273,7 +271,6 @@ public class World implements IDefaultGame
 	
 	private boolean insideCameraView(float posX, float posY, float width, float height, boolean centered)
 	{
-		//if(isServer)return true;
 		float scale = 1f/camera.scaleSmooth;
 		
 		int halfWidth = Main.displayWidth/2;

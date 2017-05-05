@@ -3,7 +3,7 @@ package org.platformer.register;
 import java.util.HashMap;
 
 import org.platformer.entity.Entity;
-import org.platformer.entity.EntityPlayer;
+import org.platformer.entity.EntityPlayerLocal;
 import org.platformer.render.RenderEntity;
 import org.platformer.render.RenderPlayer;
 
@@ -13,8 +13,8 @@ public class RegisterRenders
 	
 	public static void init()
 	{
-		entityRenderMap.put(EntityPlayer.class, new RenderPlayer());
-	}
+		entityRenderMap.put(EntityPlayerLocal.class, new RenderPlayer());
+		}
 	
 	public static RenderEntity getRenderer(Class<? extends Entity> clzz)
 	{

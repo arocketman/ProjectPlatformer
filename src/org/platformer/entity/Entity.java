@@ -1,6 +1,5 @@
 package org.platformer.entity;
 
-import org.platformer.register.RegisterKeybinds;
 import org.platformer.utils.AABB;
 import org.platformer.utils.ITrackable;
 import org.platformer.world.World;
@@ -35,6 +34,9 @@ public class Entity implements ITrackable
 	private void doCollision()
 	{
 		if(colBox == null)return;
+		motionX*=0.5f;
+		colBox.applyMotion(this,motionX,motionY);
+		
 		if(posY == colBox.posY || onGround){motionY = 0f;}
 		posX = colBox.posX;
 		posY = colBox.posY;
@@ -43,27 +45,6 @@ public class Entity implements ITrackable
 		motionY*=1.005f;
 		
 		motionY=Math.min(motionY, 15f);
-		
-		if(RegisterKeybinds.move_left.isPressed())
-		{
-			motionX = -4f;
-		}
-		
-		if(RegisterKeybinds.move_right.isPressed())
-		{
-			motionX = 4f;
-		}
-		
-		if(onGround)
-		{
-			if(RegisterKeybinds.move_up.isPressed())
-			{
-				motionY = -4.2f;
-			}
-		}
-		
-		motionX*=0.5f;
-		colBox.applyMotion(this,motionX,motionY);
 	}
 
 	@Override

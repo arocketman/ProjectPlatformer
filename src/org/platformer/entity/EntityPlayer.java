@@ -5,11 +5,10 @@ import org.platformer.world.World;
 
 public class EntityPlayer extends Entity
 {
-
 	public EntityPlayer(World world, String hash)
 	{
 		super(world, hash);
-		colBox = new AABB(15.5f,31.5f);
+		colBox = new AABB(15.925f,31.925f);
 		colBox.posX = 100;
 		colBox.posY = -50;
 	}

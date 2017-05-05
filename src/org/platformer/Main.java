@@ -12,6 +12,8 @@ import org.platformer.register.RegisterTextures;
 
 public class Main extends BasicGame
 {
+	public static String TITLE = "Platformer";
+	public static String VERSION = "0.1";
 	public static int displayWidth = 800;
 	public static int displayHeight = 600;
 	public static boolean isServer = false;
@@ -23,7 +25,7 @@ public class Main extends BasicGame
 	
     public Main()
     {
-        super("Game Test");
+        super(TITLE+" "+VERSION);
     }
 
     @Override

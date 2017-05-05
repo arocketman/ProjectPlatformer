@@ -26,6 +26,16 @@ public class EntityTracker
 		entityMap.remove(ent.getHash());
 		ent = null;
 	}
+	
+	public static void removeEntity(Entity ent)
+	{
+		if(playerMap.containsKey(ent.getHash()))
+		{
+			playerMap.remove(ent.getHash());
+		}
+		entityMap.remove(ent.getHash());
+		ent = null;
+	}
 
 	public static HashMap<String,Entity> getEntityMap(Map mapType)
 	{

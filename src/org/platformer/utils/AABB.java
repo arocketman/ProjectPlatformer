@@ -1,7 +1,6 @@
 package org.platformer.utils;
 
 import org.platformer.entity.Entity;
-import org.platformer.world.World;
 import org.platformer.world.chunk.Chunk;
 
 public class AABB
