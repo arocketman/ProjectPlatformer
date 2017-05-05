@@ -3,6 +3,8 @@ package org.platformer;
 import org.newdawn.slick.Graphics;
 import org.platformer.utils.IDefaultGame;
 import org.platformer.world.World;
+import org.platformer.world.WorldClient;
+import org.platformer.world.WorldServer;
 
 public class GameInstance implements IDefaultGame
 {
@@ -11,7 +13,9 @@ public class GameInstance implements IDefaultGame
 	@Override
 	public void init()
 	{
-		world = new World(Main.isServer);
+		long seed = 1234567891L;
+		world = Main.isServer? new WorldServer(seed) : new WorldClient(seed);
+		
 		world.init();
 	}
 

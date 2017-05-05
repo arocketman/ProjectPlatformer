@@ -27,6 +27,9 @@ public class RegisterTextures
 		addTexture("terrain", "blocks/terrain");
 	}
 
+	/**
+	 * Setup all fonts
+	 */
 	private static void setupFont()
 	{
 		Font font = new Font("Verdana", Font.BOLD, 12);
@@ -35,6 +38,11 @@ public class RegisterTextures
 		font_1 = new TrueTypeFont(font, true);
 	}
 
+	/**
+	 * Adds a new texture and maps it by name
+	 * @param name - Texture Name
+	 * @param texture - texture file path inside resources folder
+	 */
 	private static void addTexture(String name, String texture)
 	{
 		try
@@ -54,6 +62,11 @@ public class RegisterTextures
 		}
 	}
 
+	/**
+	 * Gets a mapped texture by name
+	 * @param name - Texture Name
+	 * @return Image
+	 */
 	public static Image getTexture(String name)
 	{
 		if(textureMap.containsKey(name))
