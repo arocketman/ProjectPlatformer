@@ -1,6 +1,7 @@
 package org.platformer.world.chunk;
 
 import org.platformer.block.Block;
+import org.platformer.register.RegisterBlocks;
 import org.platformer.utils.AABB;
 
 public class Chunk
@@ -21,13 +22,24 @@ public class Chunk
 		}
 	}
 	
+	/**
+	 * Place a block within the chunk using relative position
+	 * @param x - X pos range: 0-31
+	 * @param y - Y pos range: 0-31
+	 * @param block - Block that we are placing
+	 */
 	public void placeBlock(int x, int y, Block block)
 	{
 		int i = (y * 32) + x;
 		blocks[i] = block.getID();
 		needsUpdate = true;
 	}
-
+	
+	/**
+	 * Remove a block within the chunk using relative position
+	 * @param x - X pos range: 0-31
+	 * @param y - Y pos range: 0-31
+	 */
 	public void removeBlock(int x, int y)
 	{
 		int i = (y * 32) + x;
@@ -41,6 +53,9 @@ public class Chunk
 		updateAABB();
 	}
 	
+	/**
+	 * Updates the collision box and adds it to the aabbPool array
+	 */
 	public void updateAABB()
 	{
 		int cX = ((chunkX*32)*16);
@@ -54,7 +69,8 @@ public class Chunk
 			float blockY = cY+(by*16);
 			if(blocks[i] != -1)
 			{
-				aabbPool[i] = new AABB(16f,16f);
+				Block block = RegisterBlocks.get(blocks[i]);
+				aabbPool[i] = block.getCollisionBox().duplicate();
 				aabbPool[i].posX = blockX+8f;
 				aabbPool[i].posY = blockY+8f;
 			}
