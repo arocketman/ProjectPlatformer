@@ -12,13 +12,19 @@ public class RegisterBlocks
 	
 	/** Block Parameters: BlockID, textureName*/
 	
+	public static Block air = new Block(-1,"missingtexture");
 	public static Block dirt = new Block(0,"dirt").setCollision(DEFAULT_AABB);
 	public static Block stone = new Block(1,"stone").setCollision(DEFAULT_AABB);
-
+	public static Block grass = new Block(2,"grass").setCollision(DEFAULT_AABB);
+	public static Block granite = new Block(3,"granite").setCollision(DEFAULT_AABB);
+	
 	public static void init()
 	{
+		register(air);
 		register(dirt);
 		register(stone);
+		register(grass);
+		register(granite);
 	}
 
 	/**
