@@ -11,67 +11,88 @@ import org.platformer.world.chunk.Chunk;
 public class WorldGenPlanet0 implements IWorldGen
 {
 	@Override
+	public void getLayerData(ArrayList<Layer> list)
+	{
+		Layer grass = new Layer(0,0,RegisterBlocks.grass);
+		list.add(grass);
+		Layer dirt = new Layer(0,20,RegisterBlocks.dirt);
+		list.add(dirt);
+		Layer stone = new Layer(21,30,RegisterBlocks.stone);
+		list.add(stone);
+		Layer granite = new Layer(31,64,RegisterBlocks.granite);
+		list.add(granite);
+	}
+	
+	@Override
 	public void generate(World world)
 	{
 		Random random = world.getRandom();
 		ArrayList<Layer> layers = new ArrayList<Layer>();
 		getLayerData(layers);
-		
+
 		int minLayer = 999999;
 		int maxLayer = 0;
-		
+
 		for(Layer layer : layers)
 		{
 			if(minLayer > layer.rangeStart)minLayer = layer.rangeStart;
 			if(maxLayer < layer.rangeEnd)maxLayer = layer.rangeEnd;
 		}
-		
+
 		int offset = 31-(int)Math.floor(maxLayer/32);
 		int offset2 = 31-(int)Math.floor(minLayer/32);
 		Chunk chk = world.getChunk(random.nextInt(32), offset2);
-		Log.out(offset2);
+		Log.out(offset);
 		world.setSpawnChunk(chk);
-		
+
 		int maxWidth = 32;
+		int maxHeight = 32;
+		int offsetHeightTarget = (random.nextInt(32)-16);
+		int offsetHeight = offsetHeightTarget;
 		for(int i=0;i<maxWidth;i++)
 		{
+			if(offsetHeight == offsetHeightTarget)offsetHeightTarget = (random.nextInt(32)-16);
 			int chunkX = i;
-			for(Layer layer : layers)
+			for(int j=0;j<maxHeight;j++)
 			{
-				Chunk chunk = null;
-				int start = layer.rangeStart+(offset*32);
-				int end = layer.rangeEnd+(offset*32);
-				for(int a=start;a<end;a++)
+				int chunkY = j;
+				for(int x=0;x<32;x++)
 				{
-					int chunkY = (int)Math.floor(a/32);
-					Chunk chunkTest = world.getChunk(chunkX, chunkY);
-					if(chunk != chunkTest)
+					if(offsetHeight < offsetHeightTarget)offsetHeight+=random.nextInt(3);
+					if(offsetHeight > offsetHeightTarget)offsetHeight-=random.nextInt(3);
+					
+					for(int y=0;y<32;y++)
 					{
-						chunk = chunkTest;
-						generateChunk(chunk, layer);
+						int newX = x;
+						int newY = y+offsetHeight;
+						int worldPosX = (chunkX*(32*16))+(newX*16);
+						int worldPosY = ((chunkY+offset2)*(32*16))+(newY*16);
+						Chunk chunk = world.getChunkWorldPos(worldPosX, worldPosY);
+						if(chunk != null)
+						{
+							int blockID = -2;
+							for(Layer layer : layers)
+							{
+								if((((chunkY+offset2)*32)+y) >= (layer.rangeStart+(offset2*32)) && (((chunkY+offset2)*32)+y) < (layer.rangeEnd+(offset2*32)))
+								{
+									blockID = layer.block.getID();
+									break;
+								}
+							}
+							
+							if(blockID != -2)
+							{
+								int xx = (newX % 32);
+								int yy = (newY % 32);
+								if(xx >= 0 && yy >= 0)
+								{
+									chunk.placeBlock(xx, yy, RegisterBlocks.get(blockID));
+								}
+							}
+						}
 					}
 				}
 			}
 		}
-	}
-
-	private void generateChunk(Chunk chunk, Layer layer)
-	{
-		for(int i=0;i<32;i++)
-		{
-			for(int a=layer.rangeStart;a<layer.rangeEnd;a++)
-			{
-				chunk.placeBlock(i, a, layer.block);
-			}
-		}
-	}
-
-	@Override
-	public void getLayerData(ArrayList<Layer> list)
-	{
-		Layer dirt = new Layer(0,20,RegisterBlocks.dirt);
-		list.add(dirt);
-		Layer stone = new Layer(21,30,RegisterBlocks.stone);
-		list.add(stone);
 	}
 }
