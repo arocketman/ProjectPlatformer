@@ -12,10 +12,10 @@ public class Chunk
 	public int[] blocks = new int[1024];
 	public boolean needsUpdate = true;
 	
-	public Chunk(int x, int y)
+	public Chunk(int chunkX, int chunkY)
 	{
-		chunkX = x;
-		chunkY = y;
+		this.chunkX = chunkX;
+		this.chunkY = chunkY;
 		for(int i=0;i<blocks.length;i++)
 		{
 			blocks[i] = -1;

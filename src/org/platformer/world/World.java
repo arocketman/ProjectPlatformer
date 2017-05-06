@@ -20,6 +20,19 @@ public abstract class World implements IDefaultGame
 	public World(Long seed)
 	{
 		random = new Random(seed);
+		initChunks();
+	}
+
+	private void initChunks()
+	{
+		for(int i=0;i<32;i++)
+		{
+			for(int a=0;a<32;a++)
+			{
+				int i2 = (a * 32) + i;
+				chunks[i2] = new Chunk(i,a);
+			}
+		}
 	}
 
 	/**
