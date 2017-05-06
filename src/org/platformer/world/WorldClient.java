@@ -144,10 +144,10 @@ public class WorldClient extends WorldServer
 								int rowX = bid % 16;
 								int rowY = bid / 16;
 								float uvOffset = (1f/16f);
-								float uvMinX = (rowX*uvOffset);
-								float uvMinY = (rowY*uvOffset);
-								float uvMaxX = (((rowX)*uvOffset)+uvOffset);
-								float uvMaxY = (((rowY)*uvOffset)+uvOffset);
+								float uvMinX = (rowX*uvOffset)+0.000125f;
+								float uvMinY = (rowY*uvOffset)+0.000125f;
+								float uvMaxX = (((rowX)*uvOffset)+uvOffset)-0.000125f;
+								float uvMaxY = (((rowY)*uvOffset)+uvOffset)-0.000125f;
 								glEnable(GL_TEXTURE_2D);
 								RenderUtils.drawTexturedQuad(new float[]{blockX-0.0125f, blockY-0.0125f, blockX+16+0.0125f, blockY+16+0.0125f}, new float[]{uvMinX,uvMinY,uvMaxX,uvMaxY});
 							}
