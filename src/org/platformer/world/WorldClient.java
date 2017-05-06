@@ -43,7 +43,7 @@ public class WorldClient extends WorldServer
 	@Override
 	public void init()
 	{
-		camera = new Camera(4f,0.05f);
+		camera = new Camera(4f,0.005f);
 		camera.translateX = 0;
 		camera.translateY = 0;
 		super.init();
@@ -144,10 +144,10 @@ public class WorldClient extends WorldServer
 								int rowX = bid % 16;
 								int rowY = bid / 16;
 								float uvOffset = (1f/16f);
-								float uvMinX = (rowX*uvOffset)+0.0125f;
-								float uvMinY = (rowY*uvOffset)+0.0125f;
-								float uvMaxX = ((rowX+1)*uvOffset)-0.0125f;
-								float uvMaxY = ((rowY+1)*uvOffset)-0.0125f;
+								float uvMinX = (rowX*uvOffset);
+								float uvMinY = (rowY*uvOffset);
+								float uvMaxX = (((rowX)*uvOffset)+uvOffset);
+								float uvMaxY = (((rowY)*uvOffset)+uvOffset);
 								glEnable(GL_TEXTURE_2D);
 								RenderUtils.drawTexturedQuad(new float[]{blockX-0.0125f, blockY-0.0125f, blockX+16+0.0125f, blockY+16+0.0125f}, new float[]{uvMinX,uvMinY,uvMaxX,uvMaxY});
 							}
