@@ -19,5 +19,6 @@ public class ThreadWorldGenerator extends Thread
     public void run()
     {
     	worldGen.generate(world);
+    	world.postWorldGenerator();
     }
 }

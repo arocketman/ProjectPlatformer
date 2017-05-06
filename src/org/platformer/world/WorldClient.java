@@ -43,12 +43,16 @@ public class WorldClient extends WorldServer
 	@Override
 	public void init()
 	{
-		localPlayer = new EntityPlayerLocal(this,"Username");
-		
 		camera = new Camera(4f,0.05f);
 		camera.translateX = 0;
 		camera.translateY = 0;
 		super.init();
+	}
+	
+	@Override
+	public void postWorldGenerator()
+	{
+		localPlayer = new EntityPlayerLocal(this,"Username");
 	}
 	
 	@Override

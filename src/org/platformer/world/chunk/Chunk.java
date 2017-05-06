@@ -47,6 +47,12 @@ public class Chunk
 		needsUpdate = true;
 	}
 	
+	public int getBlock(int x, int y)
+	{
+		int i = (y * 32) + x;
+		return blocks[i];
+	}
+	
 	public void onUpdate()
 	{
 		needsUpdate = false;
@@ -79,5 +85,10 @@ public class Chunk
 				aabbPool[i] = null;
 			}
 		}
+	}
+
+	public int[] getWorldPosition()
+	{
+		return new int[]{chunkX*(32*16),chunkY*(32*16)};
 	}
 }

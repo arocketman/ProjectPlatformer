@@ -16,13 +16,17 @@ public abstract class World implements IDefaultGame
 	public Chunk[] chunks = new Chunk[1024];
 	
 	protected Random random;
-	
+	private Chunk spawnChunk;
+
 	public World(Long seed)
 	{
 		random = new Random(seed);
 		initChunks();
 	}
 
+	/**
+	 * Create chunk instances, 32 x 32 = 1024 chunks (1048576 blocks)
+	 */
 	private void initChunks()
 	{
 		for(int i=0;i<32;i++)
@@ -33,6 +37,13 @@ public abstract class World implements IDefaultGame
 				chunks[i2] = new Chunk(i,a);
 			}
 		}
+	}
+	
+	/**
+	 * Executes after the world is finished generating
+	 */
+	public void postWorldGenerator()
+	{
 	}
 
 	/**
@@ -71,5 +82,20 @@ public abstract class World implements IDefaultGame
 		{
 			ent.update();
 		}
+	}
+
+	public Random getRandom() 
+	{
+		return random;
+	}
+
+	public void setSpawnChunk(Chunk chunk)
+	{
+		this.spawnChunk = chunk;
+	}
+	
+	public Chunk getSpawnChunk()
+	{
+		return spawnChunk;
 	}
 }

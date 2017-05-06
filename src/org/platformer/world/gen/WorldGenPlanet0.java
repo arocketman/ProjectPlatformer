@@ -1,6 +1,7 @@
 package org.platformer.world.gen;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.platformer.register.RegisterBlocks;
 import org.platformer.utils.Log;
@@ -12,6 +13,7 @@ public class WorldGenPlanet0 implements IWorldGen
 	@Override
 	public void generate(World world)
 	{
+		Random random = world.getRandom();
 		ArrayList<Layer> layers = new ArrayList<Layer>();
 		getLayerData(layers);
 		
@@ -20,11 +22,15 @@ public class WorldGenPlanet0 implements IWorldGen
 		
 		for(Layer layer : layers)
 		{
-			if(minLayer < layer.rangeStart)minLayer = layer.rangeStart;
-			if(maxLayer > layer.rangeEnd)maxLayer = layer.rangeEnd;
+			if(minLayer > layer.rangeStart)minLayer = layer.rangeStart;
+			if(maxLayer < layer.rangeEnd)maxLayer = layer.rangeEnd;
 		}
 		
 		int offset = 31-(int)Math.floor(maxLayer/32);
+		int offset2 = 31-(int)Math.floor(minLayer/32);
+		Chunk chk = world.getChunk(random.nextInt(32), offset2);
+		Log.out(offset2);
+		world.setSpawnChunk(chk);
 		
 		int maxWidth = 32;
 		for(int i=0;i<maxWidth;i++)
@@ -39,7 +45,6 @@ public class WorldGenPlanet0 implements IWorldGen
 				{
 					int chunkY = (int)Math.floor(a/32);
 					Chunk chunkTest = world.getChunk(chunkX, chunkY);
-					Log.out(chunkY);
 					if(chunk != chunkTest)
 					{
 						chunk = chunkTest;
