@@ -218,8 +218,8 @@ public class AABB
 		{
 			if(otherCol != null)
 			{
-				posX+=((posX-otherCol.posX)/32f);
-				posY+=((posY-otherCol.posY)/32f)-0.25f;
+				posX+=((posX-otherCol.posX)/64f);
+				posY+=((posY-otherCol.posY)/64f)-0.275f;
 			}
 		}
 	}

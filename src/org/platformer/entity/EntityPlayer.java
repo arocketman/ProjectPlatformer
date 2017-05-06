@@ -9,7 +9,7 @@ public class EntityPlayer extends Entity
 	{
 		super(world, hash);
 		colBox = new AABB(15.925f,31.925f);
-		colBox.posX = 100;
-		colBox.posY = -50;
+		findWorldSpawn();
+		teleportToSpawn();
 	}
 }

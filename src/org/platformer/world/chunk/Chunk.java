@@ -12,10 +12,10 @@ public class Chunk
 	public int[] blocks = new int[1024];
 	public boolean needsUpdate = true;
 	
-	public Chunk(int x, int y)
+	public Chunk(int chunkX, int chunkY)
 	{
-		chunkX = x;
-		chunkY = y;
+		this.chunkX = chunkX;
+		this.chunkY = chunkY;
 		for(int i=0;i<blocks.length;i++)
 		{
 			blocks[i] = -1;
@@ -45,6 +45,12 @@ public class Chunk
 		int i = (y * 32) + x;
 		blocks[i] = -1;
 		needsUpdate = true;
+	}
+	
+	public int getBlock(int x, int y)
+	{
+		int i = (y * 32) + x;
+		return blocks[i];
 	}
 	
 	public void onUpdate()
@@ -79,5 +85,10 @@ public class Chunk
 				aabbPool[i] = null;
 			}
 		}
+	}
+
+	public int[] getWorldPosition()
+	{
+		return new int[]{chunkX*(32*16),chunkY*(32*16)};
 	}
 }

@@ -9,6 +9,7 @@ import org.platformer.register.RegisterBlocks;
 import org.platformer.register.RegisterKeybinds;
 import org.platformer.register.RegisterRenders;
 import org.platformer.register.RegisterTextures;
+import org.platformer.register.RegisterWorldGenerators;
 
 public class Main extends BasicGame
 {
@@ -41,6 +42,7 @@ public class Main extends BasicGame
     @Override
     public void init(GameContainer container) throws SlickException
     {
+    	RegisterWorldGenerators.init();
     	RegisterTextures.init();
     	RegisterKeybinds.init();
     	RegisterRenders.init();

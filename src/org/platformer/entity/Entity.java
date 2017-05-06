@@ -1,13 +1,16 @@
 package org.platformer.entity;
 
+import java.util.Random;
+
 import org.platformer.utils.AABB;
 import org.platformer.utils.ITrackable;
 import org.platformer.world.World;
+import org.platformer.world.chunk.Chunk;
 
 public class Entity implements ITrackable
 {
 	public final String hash;
-	public float posX, posY, motionX, motionY;
+	public float posX, posY, motionX, motionY, spawnX, spawnY;
 	public AABB colBox;
 	public World world;
 	public boolean onGround;
@@ -45,6 +48,46 @@ public class Entity implements ITrackable
 		motionY*=1.005f;
 		
 		motionY=Math.min(motionY, 15f);
+	}
+	
+
+	protected void findWorldSpawn()
+	{
+		Chunk chunk = world.getSpawnChunk();
+		if(chunk == null)return;
+		int[] worldPos = chunk.getWorldPosition();
+		Random random = new Random();
+		int x = random.nextInt(32);
+		int y = 0;
+		int blockID = chunk.getBlock(x,31);
+		if(blockID != -1)
+		{
+			for(int i=0;i<32;i++)
+			{
+				blockID = chunk.getBlock(x,31-i);
+				if(blockID == -1)
+				{
+					y = 31-i;
+					break;
+				}
+			}
+		}
+		spawnX = worldPos[0]+(x*32);
+		spawnY = worldPos[1]+(y*32)-colBox.getHeight()/2f;
+	}
+
+	protected void teleportToSpawn()
+	{
+		if(colBox != null)
+		{
+			colBox.posX = spawnX;
+			colBox.posY = spawnY;
+		}
+		else
+		{
+			posX = spawnX;
+			posY = spawnY;
+		}
 	}
 
 	@Override
