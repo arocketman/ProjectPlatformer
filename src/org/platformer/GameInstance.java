@@ -8,7 +8,7 @@ import org.platformer.world.WorldServer;
 
 public class GameInstance implements IDefaultGame
 {
-	public World world;
+	private World world;
 	
 	@Override
 	public void init()
@@ -31,5 +31,9 @@ public class GameInstance implements IDefaultGame
 	{
 		if(world == null)return;
 		world.render(g);
+	}
+	
+	public World getWorld() {
+		return world;
 	}
 }

@@ -48,6 +48,8 @@ public class WorldClient extends WorldServer
 		camera = new Camera(4f,0.05f);
 		camera.translateX = 0;
 		camera.translateY = 0;
+		org.platformer.input.Mouse.setWorld(this);
+		
 		super.init();
 	}
 	
