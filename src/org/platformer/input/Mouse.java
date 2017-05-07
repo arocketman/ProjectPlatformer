@@ -1,5 +1,8 @@
 package org.platformer.input;
 
+import org.platformer.utils.Handler;
+import org.platformer.world.WorldClient;
+
 public class Mouse {
 	/** index 0 = x-position; index 1 = y-position */
 	private static float[] position = new float[2];
@@ -17,5 +20,9 @@ public class Mouse {
 	
 	public static boolean isRightClicked() {
 		return org.lwjgl.input.Mouse.isButtonDown(1);
+	}
+	
+	public static void dummyClass() {
+		System.out.println((((WorldClient) Handler.getWorld()).getWorldCoordinates(3, 4)));
 	}
 }

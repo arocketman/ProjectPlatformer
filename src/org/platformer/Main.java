@@ -11,6 +11,10 @@ import org.platformer.register.RegisterRenders;
 import org.platformer.register.RegisterTextures;
 import org.platformer.register.RegisterWorldGenerators;
 
+// Testing 
+import org.platformer.input.Mouse;
+// end testing
+
 public class Main extends BasicGame
 {
 	public static String TITLE = "Platformer";
@@ -54,6 +58,8 @@ public class Main extends BasicGame
 			lastTick = currentTick;
 			tick();
 		}
+		
+		Mouse.dummyClass();
     }
  
     private void tick()
