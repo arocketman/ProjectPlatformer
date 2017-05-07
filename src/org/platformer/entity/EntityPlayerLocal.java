@@ -1,7 +1,9 @@
 package org.platformer.entity;
 
 import org.platformer.register.RegisterKeybinds;
+import org.platformer.utils.MiscUtils;
 import org.platformer.world.World;
+import org.platformer.world.WorldClient;
 
 public class EntityPlayerLocal extends EntityPlayer
 {
@@ -22,6 +24,7 @@ public class EntityPlayerLocal extends EntityPlayer
 			if(RegisterKeybinds.move_up.isPressed()) motionY = -4.2f;
 		}
 		
+		mouseAngle = MiscUtils.pointTowardsPosition(posX, posY-20, ((WorldClient)world).getMouseInWorld()[0], ((WorldClient)world).getMouseInWorld()[1]);
 		super.update();
 	}
 }

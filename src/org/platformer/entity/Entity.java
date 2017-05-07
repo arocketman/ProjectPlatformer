@@ -15,6 +15,10 @@ public class Entity implements ITrackable
 	public AABB colBox;
 	public World world;
 	public boolean onGround;
+	public boolean isFalling;
+	public int currentAnimation;
+	public int moveSpeed;
+	public boolean walkingLeft;
 	
 	public Entity(World world, String hash)
 	{
@@ -40,11 +44,17 @@ public class Entity implements ITrackable
 	{
 		if(colBox == null)return;
 		motionX*=0.5f;
+		if(Math.abs(motionX) < 0.001f)motionX = 0f;
+		moveSpeed = (int)(motionX*2);
+		if(motionX != 0f)walkingLeft = (motionX < 0f);
+		
 		colBox.applyMotion(this,motionX,motionY);
 		
 		if(posY == colBox.posY || onGround){motionY = 0f;}
 		posX = colBox.posX;
 		posY = colBox.posY;
+		
+		isFalling = (motionY > 0);
 		
 		motionY+=0.3f;
 		motionY*=1.005f;

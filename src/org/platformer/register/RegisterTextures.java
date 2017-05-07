@@ -25,6 +25,17 @@ public class RegisterTextures
 		addTexture("sky", "misc/sky");
 		
 		addTexture("terrain", "blocks/terrain");
+		
+		addTexture("player_leftleg", "player/skin/leftleg");
+		addTexture("player_rightleg", "player/skin/rightleg");
+		addTexture("player_leftthigh", "player/skin/leftthigh");
+		addTexture("player_rightthigh", "player/skin/rightthigh");
+		addTexture("player_leftshoulder", "player/skin/leftshoulder");
+		addTexture("player_rightshoulder", "player/skin/rightshoulder");
+		addTexture("player_leftarm", "player/skin/leftarm");
+		addTexture("player_rightarm", "player/skin/rightarm");
+		addTexture("player_torso", "player/skin/torso");
+		addTexture("player_head", "player/skin/head");
 	}
 
 	/**
