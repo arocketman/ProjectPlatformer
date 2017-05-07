@@ -66,7 +66,7 @@ public class WorldGenPlanet0 implements IWorldGen
 						int newY = y;
 						int worldPosX = (chunkX*(32*16))+(newX*16);
 						int worldPosY = ((chunkY)*(32*16))+((newY)*16);
-						float h = (float) Noise.noise((float) worldPosX / (frequency*2), (float) worldPosY / frequency); 
+						float h = (float) Noise.noise((float) worldPosX / (frequency), (float) worldPosY / frequency); 
 						Chunk chunk = world.getChunkWorldPos(worldPosX, worldPosY);
 						if(chunk != null)
 						{
