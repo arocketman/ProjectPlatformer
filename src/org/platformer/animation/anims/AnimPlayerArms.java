@@ -6,7 +6,6 @@ import org.platformer.animation.Animation;
 import org.platformer.animation.Line;
 import org.platformer.entity.EntityPlayer;
 import org.platformer.register.RegisterTextures;
-import org.platformer.utils.Log;
 import org.platformer.utils.MiscUtils;
 import org.platformer.utils.other.Vec2;
 

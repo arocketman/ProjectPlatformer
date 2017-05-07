@@ -1,10 +1,8 @@
 package org.platformer.render;
 
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.platformer.entity.Entity;
 import org.platformer.entity.EntityPlayer;
-import org.platformer.register.RegisterTextures;
 
 public class RenderPlayer extends RenderEntity
 {

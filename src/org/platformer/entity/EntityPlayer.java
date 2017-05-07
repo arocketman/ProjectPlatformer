@@ -4,11 +4,8 @@ import org.platformer.animation.Animation;
 import org.platformer.animation.AnimationEntity;
 import org.platformer.animation.anims.AnimPlayerArms;
 import org.platformer.animation.anims.AnimPlayerLegs;
-import org.platformer.register.RegisterKeybinds;
 import org.platformer.utils.AABB;
-import org.platformer.utils.MiscUtils;
 import org.platformer.world.World;
-import org.platformer.world.WorldClient;
 
 public class EntityPlayer extends Entity
 {
