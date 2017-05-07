@@ -7,7 +7,8 @@ import org.platformer.utils.AABB;
 
 public class RegisterBlocks
 {
-	private static final AABB DEFAULT_AABB = new AABB(16f,16f);
+	public static final AABB DEFAULT_AABB = new AABB(16f,16f);
+	public static final AABB SLOPE_AABB = new AABB(-8f,0f,8f,8f);
 	public static HashMap<Integer,Block> blocks = new HashMap<Integer,Block>();
 	
 	/** Block Parameters: BlockID, textureName*/
