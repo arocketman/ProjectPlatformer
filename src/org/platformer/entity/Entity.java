@@ -6,6 +6,7 @@ import org.platformer.utils.AABB;
 import org.platformer.utils.ITrackable;
 import org.platformer.world.World;
 import org.platformer.world.chunk.Chunk;
+import org.platformer.utils.Handler;
 
 public class Entity implements ITrackable
 {
@@ -22,6 +23,7 @@ public class Entity implements ITrackable
 		if(this instanceof EntityPlayer)
 		{
 			EntityTracker.addPlayer(this);
+			Handler.setPlayer((EntityPlayer) this);
 		}
 		else
 		{

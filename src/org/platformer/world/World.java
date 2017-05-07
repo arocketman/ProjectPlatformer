@@ -74,6 +74,30 @@ public abstract class World implements IDefaultGame
 	}
 	
 	/**
+	 * Get block from World + Relative Position
+	 * @param blockX - World Position
+	 * @param blockY - World Position
+	 * @param bx - Relative Position
+	 * @param by - Relative Position
+	 * @return Block ID
+	 */
+	public int getBlock(int blockX, int blockY, int bx, int by)
+	{
+		Chunk chunk = this.getChunkWorldPos(blockX, blockY);
+		if(chunk != null)
+		{
+			int x = bx;
+			int y =  by;
+			if(x < 0)x=31-bx;
+			if(y < 0)y=31-by;
+			if(x > 31)x=bx-31;
+			if(y > 31)y=by-31;
+			return chunk.getBlock(x,y);
+		}
+		return -1;
+	}
+	
+	/**
 	 * Updates / Ticks all entities
 	 */
 	public void updateEntities()

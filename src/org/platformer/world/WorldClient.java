@@ -60,6 +60,7 @@ public class WorldClient extends WorldServer
 	{
 		super.update();
 		
+		Handler.
 		if(Mouse.isButtonDown(0)) clickMouse(0);
 		if(Mouse.isButtonDown(1)) clickMouse(1);
 	}
@@ -149,7 +150,12 @@ public class WorldClient extends WorldServer
 								float uvMaxX = (((rowX)*uvOffset)+uvOffset)-0.000125f;
 								float uvMaxY = (((rowY)*uvOffset)+uvOffset)-0.000125f;
 								glEnable(GL_TEXTURE_2D);
-								RenderUtils.drawTexturedQuad(new float[]{blockX-0.0125f, blockY-0.0125f, blockX+16+0.0125f, blockY+16+0.0125f}, new float[]{uvMinX,uvMinY,uvMaxX,uvMaxY});
+								boolean[] blocksAt = new boolean[4]; //up, down, left, right
+								blocksAt[0] = (getBlock((int)blockX, (int)blockY, bx,by-1) != -1);
+								blocksAt[1] = (getBlock((int)blockX, (int)blockY, bx,by+1) != -1);
+								blocksAt[2] = (getBlock((int)blockX, (int)blockY, bx-1,by) != -1);
+								blocksAt[3] = (getBlock((int)blockX, (int)blockY, bx+1,by) != -1);
+								RenderUtils.renderBlock(blocksAt,new float[]{blockX-0.0125f, blockY-0.0125f, blockX+16+0.0125f, blockY+16+0.0125f}, new float[]{uvMinX,uvMinY,uvMaxX,uvMaxY},block);
 							}
 							
 							AABB box = chunks[i].aabbPool[a];
@@ -159,7 +165,7 @@ public class WorldClient extends WorldServer
 							}
 						}
 						glEndList();
-						chunks[i].onUpdate();
+						chunks[i].onUpdate(this);
 					}
 					else
 					{

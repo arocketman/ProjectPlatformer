@@ -3,6 +3,7 @@ package org.platformer.world.chunk;
 import org.platformer.block.Block;
 import org.platformer.register.RegisterBlocks;
 import org.platformer.utils.AABB;
+import org.platformer.world.World;
 
 public class Chunk
 {
@@ -50,19 +51,22 @@ public class Chunk
 	public int getBlock(int x, int y)
 	{
 		int i = (y * 32) + x;
+		if(i >= blocks.length)return -1;
+		if(i < 0)return -1;
 		return blocks[i];
 	}
 	
-	public void onUpdate()
+	public void onUpdate(World world)
 	{
 		needsUpdate = false;
-		updateAABB();
+		updateAABB(world);
 	}
 	
 	/**
 	 * Updates the collision box and adds it to the aabbPool array
+	 * @param world 
 	 */
-	public void updateAABB()
+	public void updateAABB(World world)
 	{
 		int cX = ((chunkX*32)*16);
 		int cY = ((chunkY*32)*16);
@@ -75,10 +79,39 @@ public class Chunk
 			float blockY = cY+(by*16);
 			if(blocks[i] != -1)
 			{
+				boolean[] blocksAt = new boolean[4]; //up, down, left, right
+				blocksAt[0] = (world.getBlock((int)blockX, (int)blockY, bx,by-1) != -1);
+				blocksAt[1] = (world.getBlock((int)blockX, (int)blockY, bx,by+1) != -1);
+				blocksAt[2] = (world.getBlock((int)blockX, (int)blockY, bx-1,by) != -1);
+				blocksAt[3] = (world.getBlock((int)blockX, (int)blockY, bx+1,by) != -1);
+				boolean flag = false;
+				
+				if(!flag && (blocksAt[0] && blocksAt[1] && blocksAt[2] && blocksAt[3]))flag = true;
+				if(!flag && (blocksAt[0] && blocksAt[1] && blocksAt[2] && !blocksAt[3]))flag = true;
+				if(!flag && (blocksAt[0] && blocksAt[1] && !blocksAt[2] && blocksAt[3]))flag = true;
+				if(!flag && (blocksAt[0] && !blocksAt[1] && blocksAt[2] && blocksAt[3]))flag = true;
+				if(!flag && (!blocksAt[0] && blocksAt[1] && blocksAt[2] && blocksAt[3]))flag = true;
+				if(!flag && (blocksAt[0] && blocksAt[1] && !blocksAt[2] && !blocksAt[3]))flag = true;
+				if(!flag && (!blocksAt[0] && !blocksAt[1] && blocksAt[2] && blocksAt[3]))flag = true;
+				if(!flag && (!blocksAt[0] && !blocksAt[1] && !blocksAt[2] && blocksAt[3]))flag = true;
+				if(!flag && (!blocksAt[0] && !blocksAt[1] && blocksAt[2] && !blocksAt[3]))flag = true;
+				if(!flag && (!blocksAt[0] && blocksAt[1] && !blocksAt[2] && !blocksAt[3]))flag = true;
+				if(!flag && (blocksAt[0] && !blocksAt[1] && !blocksAt[2] && !blocksAt[3]))flag = true;
+				if(!flag && (!blocksAt[0] && !blocksAt[1] && !blocksAt[2] && !blocksAt[3]))flag = true;
+				
 				Block block = RegisterBlocks.get(blocks[i]);
-				aabbPool[i] = block.getCollisionBox().duplicate();
-				aabbPool[i].posX = blockX+8f;
-				aabbPool[i].posY = blockY+8f;
+				AABB colBox = block.getCollisionBox().duplicate();
+				if(block.canSlope() && !flag)
+				{
+					colBox = null;//RegisterBlocks.SLOPE_AABB.duplicate();
+				}
+				
+				aabbPool[i] = colBox;
+				if(aabbPool[i] != null)
+				{
+					aabbPool[i].posX = blockX+8f;
+					aabbPool[i].posY = blockY+8f;
+				}
 			}
 			else
 			{
