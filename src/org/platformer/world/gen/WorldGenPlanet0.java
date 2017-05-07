@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import org.platformer.register.RegisterBlocks;
-import org.platformer.utils.Log;
+import org.platformer.utils.Noise;
 import org.platformer.world.World;
 import org.platformer.world.chunk.Chunk;
 
@@ -13,16 +13,16 @@ public class WorldGenPlanet0 implements IWorldGen
 	@Override
 	public void getLayerData(ArrayList<Layer> list)
 	{
-		Layer grass = new Layer(0,0,RegisterBlocks.grass);
+		Layer grass = new Layer(1,RegisterBlocks.grass);
 		list.add(grass);
-		Layer dirt = new Layer(0,20,RegisterBlocks.dirt);
+		Layer dirt = new Layer(10,RegisterBlocks.dirt);
 		list.add(dirt);
-		Layer stone = new Layer(21,30,RegisterBlocks.stone);
+		Layer stone = new Layer(25,RegisterBlocks.stone);
 		list.add(stone);
-		Layer granite = new Layer(31,64,RegisterBlocks.granite);
+		Layer granite = new Layer(20,RegisterBlocks.granite);
 		list.add(granite);
 	}
-	
+
 	@Override
 	public void generate(World world)
 	{
@@ -30,66 +30,79 @@ public class WorldGenPlanet0 implements IWorldGen
 		ArrayList<Layer> layers = new ArrayList<Layer>();
 		getLayerData(layers);
 
-		int minLayer = 999999;
 		int maxLayer = 0;
-
 		for(Layer layer : layers)
 		{
-			if(minLayer > layer.rangeStart)minLayer = layer.rangeStart;
-			if(maxLayer < layer.rangeEnd)maxLayer = layer.rangeEnd;
+			maxLayer+=layer.range;
 		}
 
-		int offset = 31-(int)Math.floor(maxLayer/32);
-		int offset2 = 31-(int)Math.floor(minLayer/32);
-		Chunk chk = world.getChunk(random.nextInt(32), offset2);
-		Log.out(offset);
+		int offset = 30-(int)Math.floor(maxLayer/32);
+		Chunk chk = world.getChunk(random.nextInt(32), offset);
 		world.setSpawnChunk(chk);
 
 		int maxWidth = 32;
 		int maxHeight = 32;
-		int offsetHeightTarget = (random.nextInt(32)-16);
-		int offsetHeight = offsetHeightTarget;
+		int targetOffset = 0;
+		int offsetHeight2 = 0;
+		
+		float caveSize = 0.45f; //0 = biggest, 0.9 = smallest
+		int frequency = 128; 
+		int roughness = 8; 
+
 		for(int i=0;i<maxWidth;i++)
 		{
-			if(offsetHeight == offsetHeightTarget)offsetHeightTarget = (random.nextInt(32)-16);
 			int chunkX = i;
 			for(int j=0;j<maxHeight;j++)
 			{
 				int chunkY = j;
 				for(int x=0;x<32;x++)
 				{
-					if(offsetHeight < offsetHeightTarget)offsetHeight+=random.nextInt(3);
-					if(offsetHeight > offsetHeightTarget)offsetHeight-=random.nextInt(3);
-					
+					if(offsetHeight2 == targetOffset)targetOffset = random.nextInt(roughness+1)-(roughness/2);
+					if(offsetHeight2 < targetOffset)offsetHeight2+=random.nextInt(4);
+					if(offsetHeight2 > targetOffset)offsetHeight2-=random.nextInt(4);
 					for(int y=0;y<32;y++)
 					{
 						int newX = x;
-						int newY = y+offsetHeight;
+						int newY = y;
 						int worldPosX = (chunkX*(32*16))+(newX*16);
-						int worldPosY = ((chunkY+offset2)*(32*16))+(newY*16);
+						int worldPosY = ((chunkY)*(32*16))+((newY)*16);
+						float h = (float) Noise.noise((float) worldPosX / (frequency*2), (float) worldPosY / frequency); 
 						Chunk chunk = world.getChunkWorldPos(worldPosX, worldPosY);
 						if(chunk != null)
 						{
 							int blockID = -2;
+
+							int rangeY = (worldPosY/16)+offsetHeight2;
+							int last = 0;
+							int index = 0;
 							for(Layer layer : layers)
 							{
-								if((((chunkY+offset2)*32)+y) >= (layer.rangeStart+(offset2*32)) && (((chunkY+offset2)*32)+y) < (layer.rangeEnd+(offset2*32)))
+								int check1 = (((maxHeight*32)-maxLayer)+last);
+								int rand = (random.nextInt(5));
+								if(index <= 1)rand = 0;
+								if(rangeY > check1-rand && rangeY <= check1+layer.range+rand)
 								{
 									blockID = layer.block.getID();
 									break;
 								}
+								
+								index++;
+								last+=layer.range;
 							}
-							
-							if(blockID != -2)
+
+							if(!(h > caveSize && h <= 1))
 							{
-								int xx = (newX % 32);
-								int yy = (newY % 32);
-								if(xx >= 0 && yy >= 0)
+								if(blockID != -2)
 								{
+									int xx = (newX % 32);
+									int yy = (newY % 32);
+									if(xx < 0)xx = 32+xx;
+									if(yy < 0)yy = 32+yy;
+
 									chunk.placeBlock(xx, yy, RegisterBlocks.get(blockID));
 								}
 							}
-						}
+						}	
 					}
 				}
 			}
