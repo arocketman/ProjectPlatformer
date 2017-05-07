@@ -60,6 +60,7 @@ public class WorldClient extends WorldServer
 	{
 		super.update();
 		
+		Handler.
 		if(Mouse.isButtonDown(0)) clickMouse(0);
 		if(Mouse.isButtonDown(1)) clickMouse(1);
 	}

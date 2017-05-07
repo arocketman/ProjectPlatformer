@@ -16,7 +16,7 @@ public class GameInstance implements IDefaultGame
 	{
 		long seed = 1234567891L;
 		world = Main.isServer ? new WorldServer(seed) : new WorldClient(seed);
-		Handler.setWorld(world);
+		Handler.setWorld((WorldClient)(world));
 		
 		Handler.getWorld().init();
 	}
