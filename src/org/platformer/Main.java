@@ -18,9 +18,8 @@ public class Main extends BasicGame
 	public static int displayWidth = 800;
 	public static int displayHeight = 600;
 	public static boolean isServer = false;
-	public static Main mainInstance;
-	
-	private GameInstance gameInstance = new GameInstance();
+
+	public GameInstance gameInstance = new GameInstance();
 	
     private long lastEvent;
 	private int currentTick, lastTick;
@@ -28,16 +27,7 @@ public class Main extends BasicGame
     public Main()
     {
         super(TITLE+" "+VERSION);
-        mainInstance = this;
     }
-	
-	public static Main getMain() {
-		return mainInstance;
-	}
-	
-	public GameInstance getGameInstance() {
-		return gameInstance;
-	}
 
     @Override
     public void init(GameContainer container) throws SlickException
