@@ -183,7 +183,7 @@ public class AABB
 									intersectsY = false;
 								}
 							}
-							
+							float difY = Math.abs(other.getMinYWP()-getMaxYWP());
 							while(intersectsX)
 							{
 								motionX/=2f;
@@ -194,6 +194,12 @@ public class AABB
 								else
 								{
 									intersectsX = false;
+								}
+								
+								if(difY <= 16f && !intersectsMotion(other, motionX, -difY))
+								{
+									motionY -= Math.abs(motionX)+0.5f;
+									motionX*=1.25f;
 								}
 							}
 						}

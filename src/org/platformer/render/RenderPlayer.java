@@ -13,7 +13,6 @@ public class RenderPlayer extends RenderEntity
 		//tex.draw(ent.posX-(ent.colBox.getWidth()/2), ent.posY-(ent.colBox.getHeight()/2),ent.colBox.getWidth(),ent.colBox.getHeight());
 		g.pushTransform();
 		g.translate(ent.posX, ent.posY);
-		g.scale(0.5f, 0.5f);
 		((EntityPlayer) ent).animationEntity.render(g);
 		g.popTransform();
 	}

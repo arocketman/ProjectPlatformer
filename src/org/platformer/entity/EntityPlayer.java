@@ -15,7 +15,7 @@ public class EntityPlayer extends Entity
 	public EntityPlayer(World world, String hash)
 	{
 		super(world, hash);
-		colBox = new AABB(15.925f,31.925f);
+		colBox = new AABB(15.925f,62.925f);
 		findWorldSpawn();
 		teleportToSpawn();
 		setupAnimations();
@@ -31,7 +31,7 @@ public class EntityPlayer extends Entity
 	@Override
 	public void update()
 	{
-		animationEntity.update();
+		if(animationEntity != null)animationEntity.update();
 		super.update();
 	}
 }
