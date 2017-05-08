@@ -46,6 +46,7 @@ public class WorldClient extends WorldServer
 		camera = new Camera(4f,0.005f);
 		camera.translateX = 0;
 		camera.translateY = 0;
+		camera.smoothMovement = true;
 		super.init();
 	}
 	
@@ -96,8 +97,8 @@ public class WorldClient extends WorldServer
 	{
 		renderBackground(g);
 		transformCamera(g);
-		renderEntities(g);
 		renderChunks(g);
+		renderEntities(g);
 		g.resetTransform();
 		super.render(g);
 	}
@@ -134,7 +135,28 @@ public class WorldClient extends WorldServer
 						{
 							int by = a/32;
 							int bx = (a)-(by*32);
+							int id2 = backgroundChunks[i].blocks[a];
 							int id = chunks[i].blocks[a];
+							if(id2 != -1 && id == -1)
+							{
+								Block block = RegisterBlocks.get(id2);
+								float blockX = chunkX+(bx*16);
+								float blockY = chunkY+(by*16);
+								
+								int bid = block.getID();
+								int rowX = bid % 16;
+								int rowY = bid / 16;
+								float uvOffset = (1f/16f);
+								float uvMinX = (rowX*uvOffset)+0.000125f;
+								float uvMinY = (rowY*uvOffset)+0.000125f;
+								float uvMaxX = (((rowX)*uvOffset)+uvOffset)-0.000125f;
+								float uvMaxY = (((rowY)*uvOffset)+uvOffset)-0.000125f;
+								glEnable(GL_TEXTURE_2D);
+								float shade = 0.65f;
+								GL11.glColor4f(shade, shade, shade, 1f);
+								RenderUtils.renderBlock(new float[]{blockX-0.0125f, blockY-0.0125f, blockX+16+0.0125f, blockY+16+0.0125f}, new float[]{uvMinX,uvMinY,uvMaxX,uvMaxY},block);
+								GL11.glColor4f(1f, 1f, 1f, 1f);
+							}
 							if(id != -1)
 							{
 								Block block = RegisterBlocks.get(id);
@@ -150,12 +172,8 @@ public class WorldClient extends WorldServer
 								float uvMaxX = (((rowX)*uvOffset)+uvOffset)-0.000125f;
 								float uvMaxY = (((rowY)*uvOffset)+uvOffset)-0.000125f;
 								glEnable(GL_TEXTURE_2D);
-								boolean[] blocksAt = new boolean[4]; //up, down, left, right
-								blocksAt[0] = (getBlock((int)blockX, (int)blockY, bx,by-1) != -1);
-								blocksAt[1] = (getBlock((int)blockX, (int)blockY, bx,by+1) != -1);
-								blocksAt[2] = (getBlock((int)blockX, (int)blockY, bx-1,by) != -1);
-								blocksAt[3] = (getBlock((int)blockX, (int)blockY, bx+1,by) != -1);
-								RenderUtils.renderBlock(blocksAt,new float[]{blockX-0.0125f, blockY-0.0125f, blockX+16+0.0125f, blockY+16+0.0125f}, new float[]{uvMinX,uvMinY,uvMaxX,uvMaxY},block);
+								RenderUtils.renderBlock(new float[]{blockX-0.0125f, blockY-0.0125f, blockX+16+0.0125f, blockY+16+0.0125f}, new float[]{uvMinX,uvMinY,uvMaxX,uvMaxY},block);
+								GL11.glColor4f(1f, 1f, 1f, 1f);
 							}
 							
 							AABB box = chunks[i].aabbPool[a];
@@ -166,6 +184,7 @@ public class WorldClient extends WorldServer
 						}
 						glEndList();
 						chunks[i].onUpdate(this);
+						backgroundChunks[i].onUpdate(this);
 					}
 					else
 					{
@@ -175,20 +194,19 @@ public class WorldClient extends WorldServer
 				}
 				else
 				{
-					if(!chunks[i].needsUpdate)
-					{
-						chunks[i].needsUpdate = true;
-					}
+					if(!chunks[i].needsUpdate)chunks[i].needsUpdate = true;;
+					if(!backgroundChunks[i].needsUpdate)backgroundChunks[i].needsUpdate = true;;
 				}
 			}
 		}
-		
+		/**
 		float[] mouse = getMouseInWorld();
 		float mouseX = mouse[0]-8;
 		float mouseY = mouse[1]-8;
 		int chunkX = (int) Math.floor(mouseX/(16*32));
 		int chunkY = (int) Math.floor(mouseY/(16*32));
 		g.drawRect(chunkX*(16*32), chunkY*(16*32), (16*32), (16*32));
+		*/
 	}
 
 	/**

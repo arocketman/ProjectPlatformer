@@ -33,6 +33,7 @@ public class RenderUtils
 		glEnd();
 	}
 
+	@SuppressWarnings("unused")
 	private static void drawTexturedTriangle(float[] pos, float[] uv)
 	{
 		glBegin(GL11.GL_TRIANGLES);
@@ -47,54 +48,8 @@ public class RenderUtils
 		glEnd();
 	}
 
-	public static void renderBlock(boolean[] blocksAt, float[] pos, float[] uv, Block block)
+	public static void renderBlock(float[] pos, float[] uv, Block block)
 	{
-		boolean flag = false;
-		
-		if(!flag && (blocksAt[0] && blocksAt[1] && blocksAt[2] && blocksAt[3]))flag = true;
-		if(!flag && (blocksAt[0] && blocksAt[1] && blocksAt[2] && !blocksAt[3]))flag = true;
-		if(!flag && (blocksAt[0] && blocksAt[1] && !blocksAt[2] && blocksAt[3]))flag = true;
-		if(!flag && (blocksAt[0] && !blocksAt[1] && blocksAt[2] && blocksAt[3]))flag = true;
-		if(!flag && (!blocksAt[0] && blocksAt[1] && blocksAt[2] && blocksAt[3]))flag = true;
-		if(!flag && (blocksAt[0] && blocksAt[1] && !blocksAt[2] && !blocksAt[3]))flag = true;
-		if(!flag && (!blocksAt[0] && !blocksAt[1] && blocksAt[2] && blocksAt[3]))flag = true;
-		if(!flag && (!blocksAt[0] && !blocksAt[1] && !blocksAt[2] && blocksAt[3]))flag = true;
-		if(!flag && (!blocksAt[0] && !blocksAt[1] && blocksAt[2] && !blocksAt[3]))flag = true;
-		if(!flag && (!blocksAt[0] && blocksAt[1] && !blocksAt[2] && !blocksAt[3]))flag = true;
-		if(!flag && (blocksAt[0] && !blocksAt[1] && !blocksAt[2] && !blocksAt[3]))flag = true;
-		if(!flag && (!blocksAt[0] && !blocksAt[1] && !blocksAt[2] && !blocksAt[3]))flag = true;
-		
-		if(!block.canSlope() || flag)
-		{
-			drawTexturedQuad(pos, uv);
-		}
-		
-		if(blocksAt[0] && blocksAt[2] && !blocksAt[1] && !blocksAt[3]) //up and left
-		{
-			float[] pos2 = new float[]{pos[0],pos[1],pos[2],pos[1],pos[0],pos[3]};
-			float[] uv2 = new float[]{uv[0],uv[1],uv[2],uv[1],uv[0],uv[3]};
-			drawTexturedTriangle(pos2, uv2);
-		}
-		
-		if(blocksAt[0] && blocksAt[3] && !blocksAt[1] && !blocksAt[2]) //up and right
-		{
-			float[] pos2 = new float[]{pos[0],pos[1],pos[2],pos[1],pos[2],pos[3]};
-			float[] uv2 = new float[]{uv[0],uv[1],uv[2],uv[1],uv[2],uv[3]};
-			drawTexturedTriangle(pos2, uv2);
-		}
-		
-		if(blocksAt[1] && blocksAt[2] && !blocksAt[0] && !blocksAt[3]) //down and left
-		{
-			float[] pos2 = new float[]{pos[0],pos[1],pos[2],pos[3],pos[0],pos[3]};
-			float[] uv2 = new float[]{uv[0],uv[1],uv[2],uv[3],uv[0],uv[3]};
-			drawTexturedTriangle(pos2, uv2);
-		}
-		
-		if(blocksAt[1] && blocksAt[3] && !blocksAt[0] && !blocksAt[2]) //down and right
-		{
-			float[] pos2 = new float[]{pos[2],pos[1],pos[2],pos[3],pos[0],pos[3]};
-			float[] uv2 = new float[]{uv[0],uv[1],uv[2],uv[3],uv[0],uv[3]};
-			drawTexturedTriangle(pos2, uv2);
-		}
+		drawTexturedQuad(pos, uv);
 	}
 }

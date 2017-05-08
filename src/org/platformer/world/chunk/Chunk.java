@@ -101,11 +101,6 @@ public class Chunk
 				
 				Block block = RegisterBlocks.get(blocks[i]);
 				AABB colBox = block.getCollisionBox().duplicate();
-				if(block.canSlope() && !flag)
-				{
-					colBox = null;//RegisterBlocks.SLOPE_AABB.duplicate();
-				}
-				
 				aabbPool[i] = colBox;
 				if(aabbPool[i] != null)
 				{

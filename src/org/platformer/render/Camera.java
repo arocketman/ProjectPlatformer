@@ -19,6 +19,7 @@ public class Camera
 	public float scaleSmooth;
 	public float translateXSmooth;
 	public float translateYSmooth;
+	public float smoothSpeed = 0.25f;
 	
 	public Camera(float maxScale, float minScale)
 	{
@@ -30,9 +31,9 @@ public class Camera
 	{
 		if(smoothMovement)
 		{
-			scaleSmooth = MiscUtils.incrementSmoothly(scale, scaleSmooth, 0.01f, 1f);
-			translateXSmooth = MiscUtils.incrementSmoothly(translateX, translateXSmooth, 0.1f, 1f);
-			translateYSmooth = MiscUtils.incrementSmoothly(translateY, translateYSmooth, 0.1f, 1f);
+			scaleSmooth = MiscUtils.incrementSmoothly(scale, scaleSmooth, smoothSpeed/2f, 0.001f);
+			translateXSmooth = MiscUtils.incrementSmoothly(translateX, translateXSmooth, smoothSpeed, 2f);
+			translateYSmooth = MiscUtils.incrementSmoothly(translateY, translateYSmooth, smoothSpeed, 2f);
 		}
 		else
 		{
