@@ -48,7 +48,7 @@ public class RenderUtils
 		glEnd();
 	}
 
-	public static void renderBlock(boolean[] blocksAt, float[] pos, float[] uv, Block block)
+	public static void renderBlock(float[] pos, float[] uv, Block block)
 	{
 		drawTexturedQuad(pos, uv);
 	}

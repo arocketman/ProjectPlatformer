@@ -89,7 +89,8 @@ public class WorldGenPlanet0 implements IWorldGen
 						float h2 = (float) Noise.noise((float) worldPosX / (frequency*0.95), (float) worldPosY / (frequency*0.5)); 
 						float h3 = (float) Noise.noise((float) worldPosX / (frequency*0.75), (float) worldPosY / (frequency*1.5)); 
 						Chunk chunk = world.getChunkWorldPos(worldPosX, worldPosY);
-						if(chunk != null)
+						Chunk bgchunk = world.getBGChunkWorldPos(worldPosX, worldPosY);
+						if(chunk != null && bgchunk != null)
 						{
 							int blockID = -2;
 
@@ -122,6 +123,7 @@ public class WorldGenPlanet0 implements IWorldGen
 
 							/** Check if the noise size is within our cave max and min size*/
 							boolean flag = !(gen1 > caveSize && gen1 <= 1) && !(gen2 > caveSize && gen2 <= 1) && !(gen3 > caveSize && gen3 <= 1);
+							
 							if(i == 0)
 							{
 								if(x == 0)flag = true;
@@ -130,6 +132,11 @@ public class WorldGenPlanet0 implements IWorldGen
 							if(i == maxWidth-1)
 							{
 								if(x == 31)flag = true;
+							}
+							
+							if(blockID != -2)
+							{
+								bgchunk.placeBlock(x, y, RegisterBlocks.get(blockID));
 							}
 							
 							if(flag)
