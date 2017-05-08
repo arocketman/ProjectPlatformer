@@ -5,8 +5,7 @@ import org.platformer.utils.AABB;
 public class Block
 {
 	private String texture = "missingtexture";
-	private boolean canSlope = true;
-
+	
 	private final int blockID;
 	private AABB aabb;
 	
@@ -39,16 +38,5 @@ public class Block
 	public boolean hasCollision()
 	{
 		return (getCollisionBox() != null);
-	}
-	
-	public boolean canSlope()
-	{
-		return canSlope;
-	}
-
-	public Block setCanSlope(boolean canSlope)
-	{
-		this.canSlope = canSlope;
-		return this;
 	}
 }
