@@ -2,6 +2,7 @@ package org.platformer;
 
 import org.newdawn.slick.Graphics;
 import org.platformer.gui.GuiMainMenu;
+import org.platformer.gui.GuiOverlay;
 import org.platformer.gui.IGui;
 import org.platformer.utils.IDefaultGame;
 import org.platformer.world.World;
@@ -56,6 +57,7 @@ public class GameInstance implements IDefaultGame
 	public void startWorld()
 	{
 		long seed = 1234567891L;
+		displayGui(new GuiOverlay());
 		world = Main.isServer? new WorldServer(seed) : new WorldClient(seed);
 		world.init();
 	}

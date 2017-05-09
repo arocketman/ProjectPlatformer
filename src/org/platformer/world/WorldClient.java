@@ -36,7 +36,7 @@ import org.platformer.world.chunk.Chunk;
 public class WorldClient extends WorldServer
 {
 	private Image terrain = RegisterTextures.getTexture("terrain");
-	private EntityPlayer localPlayer;
+	public EntityPlayer localPlayer;
 	private Camera camera;
 
 	private int glGenList = -99;
@@ -252,8 +252,8 @@ public class WorldClient extends WorldServer
 				}
 				else
 				{
-					if(!chunks[i].needsUpdate)chunks[i].needsUpdate = true;;
-					if(!backgroundChunks[i].needsUpdate)backgroundChunks[i].needsUpdate = true;;
+					if(!chunks[i].needsUpdate)chunks[i].needsUpdate = true;
+					if(!backgroundChunks[i].needsUpdate)backgroundChunks[i].needsUpdate = true;
 				}
 			}
 		}
