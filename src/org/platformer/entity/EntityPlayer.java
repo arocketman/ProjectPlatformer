@@ -7,7 +7,10 @@ import org.platformer.animation.anims.AnimPlayerLegs;
 import org.platformer.data.PlayerConfiguration;
 import org.platformer.utils.AABB;
 import org.platformer.world.World;
+import org.platformer.world.WorldClient;
+import org.platformer.world.chunk.Chunk;
 import org.platformer.input.Mouse;
+import org.platformer.register.RegisterBlocks;
 
 public class EntityPlayer extends Entity
 {
@@ -80,11 +83,31 @@ public class EntityPlayer extends Entity
 		animationEntity.addAnimation("anim_player", new Animation[]{new AnimPlayerLegs(),new AnimPlayerArms()});
 		animationEntity.remapIDToExisting("anim_player", 1);
 	}
-
+	
+	// Testing
+	private void checkInput() {
+		int chunkX = (int) Math.floor(playerMouse.getRelativeLocation()[0]/(16*32));
+		int chunkY = (int) Math.floor(playerMouse.getRelativeLocation()[1]/(16*32));
+		int x = (int) Math.floor((playerMouse.getRelativeLocation()[0])/16f)-(chunkX*(32));
+		int y = (int) Math.floor((playerMouse.getRelativeLocation()[1])/16f)-(chunkY*(32));
+		
+		Chunk chunk = WorldClient.getWorld().getChunk(chunkX,chunkY);
+		if (chunk == null)
+			return;
+		
+		if (playerMouse.isLeftClicked())
+			chunk.removeBlock(x, y);
+		if (playerMouse.isRightClicked())
+			chunk.placeBlock(x, y, RegisterBlocks.dirt);
+	}
+	
 	@Override
 	public void update()
 	{
 		if(animationEntity != null)animationEntity.update();
+		playerMouse.update();
 		super.update();
+		
+		checkInput();
 	}
 }

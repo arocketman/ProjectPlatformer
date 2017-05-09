@@ -81,9 +81,7 @@ public class WorldClient extends WorldServer
 	public void update()
 	{
 		super.update();
-
-		if(Mouse.isButtonDown(0)) clickMouse(0);
-		if(Mouse.isButtonDown(1)) clickMouse(1);
+		
 		if(Mouse.isButtonDown(2)) clickMouse(2); // testing the add of an item to the inventory
 	}
 
