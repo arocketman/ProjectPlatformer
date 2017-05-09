@@ -17,6 +17,7 @@ public class Chunk
 	public int[] blocks = new int[1024];
 	public boolean needsUpdate = true;
 
+
 	private List<Entity> entities;		// used to keep track of each entities in the chunk
 
 	public Chunk(int chunkX, int chunkY)
