@@ -1,6 +1,6 @@
 package org.platformer.entity;
 
-import org.platformer.Data.PlayerConfiguration;
+import org.platformer.data.PlayerConfiguration;
 import org.platformer.register.RegisterKeybinds;
 import org.platformer.utils.MiscUtils;
 import org.platformer.world.World;

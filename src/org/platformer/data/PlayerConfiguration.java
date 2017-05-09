@@ -1,4 +1,4 @@
-package org.platformer.Data;
+package org.platformer.data;
 
 /**
  * <p>PlayerConfiguration is a class that describes

@@ -1,7 +1,7 @@
 package org.platformer.entity;
 
 
-import org.platformer.Data.Item;
+import org.platformer.data.Item;
 import org.platformer.utils.AABB;
 import org.platformer.world.World;
 

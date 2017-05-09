@@ -1,4 +1,4 @@
-package org.platformer.Data;
+package org.platformer.data;
 
 /**
  * <p>This class is used to describe a consumable in the game.

@@ -1,4 +1,4 @@
-package org.platformer.Data;
+package org.platformer.data;
 
 import java.util.ArrayList;
 import java.util.List;

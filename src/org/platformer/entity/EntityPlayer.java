@@ -1,10 +1,10 @@
 package org.platformer.entity;
 
-import org.platformer.Data.PlayerConfiguration;
 import org.platformer.animation.Animation;
 import org.platformer.animation.AnimationEntity;
 import org.platformer.animation.anims.AnimPlayerArms;
 import org.platformer.animation.anims.AnimPlayerLegs;
+import org.platformer.data.PlayerConfiguration;
 import org.platformer.utils.AABB;
 import org.platformer.world.World;
 

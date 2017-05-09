@@ -46,17 +46,11 @@ public class Entity implements ITrackable
 	 */
 	protected void updateChunkPosition()
 	{
-
-		if(currentChunk != null)
-		{
-
-			currentChunk.removeEntity(this);
-
-		}
-
+		if(currentChunk == null)return;
+	
+		currentChunk.removeEntity(this);
 		currentChunk = world.getChunkWorldPos((int)posX, (int)posY);
 		currentChunk.placeEntity(this);
-
 	}
 
 	private void doCollision()
