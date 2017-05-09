@@ -138,3 +138,15 @@ public abstract class World implements IDefaultGame
 		return spawnChunk;
 	}
 }
+
+class WorldHandler {
+	private static World world;
+	
+	public static void setWorld(World p_World) {
+		world = p_World;
+	}
+	
+	public static World getWorld() {
+		return world;
+	}
+}

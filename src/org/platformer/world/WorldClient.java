@@ -54,6 +54,8 @@ public class WorldClient extends WorldServer
 		camera.translateY = 0;
 		camera.smoothMovement = false;
 		super.init();
+		
+		WorldClientHandler.setWorldClient(this);
 	}
 
 	@Override
@@ -367,5 +369,17 @@ public class WorldClient extends WorldServer
 		}
 
 		return (posTopLeft[0] > topleft[0] && posTopLeft[1] > topleft[1] && posBottomRight[0] < bottomright[0] && posBottomRight[1] < bottomright[1]);
+	}
+}
+
+class WorldClientHandler {
+	private static WorldClient worldClient;
+	
+	public static void setWorldClient(WorldClient p_WorldClient) {
+		worldClient = p_WorldClient;
+	}
+	
+	public static WorldClient getWorldClient() {
+		return worldClient;
 	}
 }
