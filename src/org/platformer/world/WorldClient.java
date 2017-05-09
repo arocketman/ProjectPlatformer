@@ -73,13 +73,16 @@ public class WorldClient extends WorldServer
 		EntityItem item3 = new EntityItem(this, "item3", new Item("item3", "missingtexture"));
 	}
 
+	public static WorldClient getWorld() {
+		return WorldClientHandler.getWorldClient();
+	}
+
+
 	@Override
 	public void update()
 	{
 		super.update();
 
-		if(Mouse.isButtonDown(0)) clickMouse(0);
-		if(Mouse.isButtonDown(1)) clickMouse(1);
 		if(Mouse.isButtonDown(2)) clickMouse(2); // testing the add of an item to the inventory
 	}
 
@@ -186,6 +189,7 @@ public class WorldClient extends WorldServer
 				{
 					if(chunks[i].needsUpdate)
 					{
+						chunks[i].onUpdate(this);
 						if(firstClear)
 						{
 							aabbPool.clear();
@@ -199,6 +203,13 @@ public class WorldClient extends WorldServer
 							int bx = (a)-(by*32);
 							int id2 = chunks[i].backgroundBlocks[a];
 							int id = chunks[i].blocks[a].getID();
+							int light = chunks[i].light[a];
+							float[] rgb = new float[]{1f,1f,1f};
+
+							float lightValue = ((float)light)/255f;
+							rgb[0] = lightValue;
+							rgb[1] = lightValue;
+							rgb[2] = lightValue;
 							if(id2 != -1 && id == -1)
 							{
 								Block block = RegisterBlocks.get(id2);
@@ -215,7 +226,7 @@ public class WorldClient extends WorldServer
 								float uvMaxY = (((rowY)*uvOffset)+uvOffset)-0.000125f;
 								glEnable(GL_TEXTURE_2D);
 								float shade = 0.65f;
-								GL11.glColor4f(shade, shade, shade, 1f);
+								GL11.glColor4f(rgb[0]*shade, rgb[1]*shade, rgb[2]*shade, 1f);
 								RenderUtils.renderBlock(new float[]{blockX-0.0125f, blockY-0.0125f, blockX+16+0.0125f, blockY+16+0.0125f}, new float[]{uvMinX,uvMinY,uvMaxX,uvMaxY},block);
 								GL11.glColor4f(1f, 1f, 1f, 1f);
 							}
@@ -234,6 +245,7 @@ public class WorldClient extends WorldServer
 								float uvMaxX = (((rowX)*uvOffset)+uvOffset)-0.000125f;
 								float uvMaxY = (((rowY)*uvOffset)+uvOffset)-0.000125f;
 								glEnable(GL_TEXTURE_2D);
+								GL11.glColor4f(rgb[0], rgb[1], rgb[2], 1f);
 								RenderUtils.renderBlock(new float[]{blockX-0.0125f, blockY-0.0125f, blockX+16+0.0125f, blockY+16+0.0125f}, new float[]{uvMinX,uvMinY,uvMaxX,uvMaxY},block);
 								GL11.glColor4f(1f, 1f, 1f, 1f);
 							}
@@ -245,7 +257,6 @@ public class WorldClient extends WorldServer
 							}
 						}
 						glEndList();
-						chunks[i].onUpdate(this);
 					}
 					else
 					{

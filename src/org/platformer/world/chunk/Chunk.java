@@ -7,6 +7,7 @@ import org.platformer.block.Block;
 import org.platformer.entity.Entity;
 import org.platformer.register.RegisterBlocks;
 import org.platformer.utils.AABB;
+import org.platformer.utils.Log;
 import org.platformer.world.World;
 
 public class Chunk
@@ -16,6 +17,7 @@ public class Chunk
 	public AABB[] aabbPool = new AABB[1024];
 	public Block[] blocks = new Block[1024];
 	public int[] backgroundBlocks = new int[1024];
+	public int[] light = new int[1024];
 	public boolean needsUpdate = true;
 
 	private List<Entity> entities;		// used to keep track of each entities in the chunk
@@ -26,7 +28,10 @@ public class Chunk
 		this.chunkY = chunkY;
 
 		for(int i=0;i<blocks.length;i++)
+		{
 			blocks[i] = new Block(RegisterBlocks.air);
+			backgroundBlocks[i] = -1;
+		}
 
 
 		entities = new LinkedList<>();
@@ -117,10 +122,114 @@ public class Chunk
 		return aabbPool[i];
 	}
 
+	public int getLight(int x, int y)
+	{
+		int i = (y * 32) + x;
+		if(i >= light.length)return 0;
+		if(i < 0)return 0;
+		return light[i];
+	}
+
 	public void onUpdate(World world)
 	{
 		needsUpdate = false;
 		updateAABB(world);
+		updateLighting(world);
+	}
+
+	public boolean isEmpty()
+	{
+		for(int x=0;x<32;x++)
+		{
+			for(int y=0;y<32;y++)
+			{
+				int blockid = getBlock(x,y,false);
+				int blockidbg = getBlock(x,y,true);
+
+				if(blockid != -1 || blockidbg != -1)return false;
+			}
+		}
+
+		return true;
+	}
+
+	private void updateLighting(World world)
+	{
+		for(int i=0;i<light.length;i++)
+		{
+			light[i] = 0;
+		}
+
+		Chunk chk = null; //first chunk on the y axis that contains blocks
+		for(int y=0;y<32;y++)
+		{
+			chk = world.getChunk(chunkX, y);
+			if(!chk.isEmpty())
+			{
+				break;
+			}
+		}
+
+		if(!this.isEmpty() && chk == this)//if first chunk is ours, then populate all air with light until it hits a block
+		{
+			for(int x=0;x<32;x++)
+			{
+				boolean first = true;
+				for(int y=0;y<32;y++)
+				{
+					int i = (y * 32) + x;
+
+					int blockid = getBlock(x,y,false);
+
+					if(blockid != -1)
+					{
+						if(first)
+						{
+							first = false;
+						}
+					}
+					else
+					{
+						if(first)
+						{
+							light[i]=300;
+						}
+					}
+				}
+			}
+		}
+
+		if(!this.isEmpty())
+		{
+			for(int p=0;p<4;p++) //how many passes / iterations
+			{
+				for(int x=0;x<32;x++)
+				{
+					for(int y=0;y<32;y++)
+					{
+						int i = (y * 32) + x;
+						int l_up = getLight(x,y-1);
+						int l_down = getLight(x,y+1);
+						int l_left = getLight(x-1,y);
+						int l_right = getLight(x+1,y);
+						int total = (int)((l_up + l_down + l_left + l_right)*1.3f);
+						int remove = 0;
+						if(l_up == 0)remove++;
+						if(l_down == 0)remove++;
+						if(l_left == 0)remove++;
+						if(l_right == 0)remove++;
+						light[i] = Math.min(total/(5-remove),255);
+					}
+				}
+			}
+		}
+		else//if empty chunk, populate fully with light
+		{
+			for(int i=0;i<light.length;i++)
+			{
+				light[i]=300;
+			}
+		}
 	}
 
 	/**
