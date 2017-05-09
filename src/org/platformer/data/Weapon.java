@@ -15,9 +15,9 @@ public class Weapon extends Item
 
     private int damage;
 
-    public Weapon(String name, String texture, int damage) {
+    public Weapon(String name, String texture, String hash, int damage) {
 
-        super(name, texture);
+        super(name, texture, hash);
         this.damage = damage;
 
     }

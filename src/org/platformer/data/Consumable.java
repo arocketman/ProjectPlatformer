@@ -13,9 +13,9 @@ package org.platformer.data;
 public class Consumable extends Item
 {
 
-    public Consumable(String name, String texture) {
+    public Consumable(String name, String texture, String hash) {
 
-        super(name, texture);
+        super(name, texture, hash);
 
     }
 

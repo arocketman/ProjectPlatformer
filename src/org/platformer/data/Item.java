@@ -12,6 +12,7 @@ public class Item {
 
     private String      texture;    // the item's texture that will be rendered
     private String      name;
+    private String      hash;
 
     /**
      * Constructor
@@ -19,11 +20,12 @@ public class Item {
      * @param name the item's name
      * @param texture the name of the item's texture that will be rendered
      */
-    public Item(String name, String texture)
+    public Item(String name, String texture, String hash)
     {
 
         this.name = name;
         this.texture = texture;
+        this.hash = hash;
 
     }
 
@@ -72,6 +74,12 @@ public class Item {
     {
 
         return texture;
+
+    }
+
+    public String getHash() {
+
+        return hash;
 
     }
 
