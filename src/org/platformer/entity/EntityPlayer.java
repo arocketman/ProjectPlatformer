@@ -97,10 +97,16 @@ public class EntityPlayer extends Entity
 		if (chunk == null)
 			return;
 		
-		if (playerMouse.isLeftClicked())
-			chunk.removeBlock(x, y, false);
-		if (playerMouse.isRightClicked())
-			chunk.placeBlock(x, y, RegisterBlocks.dirt, false);
+		if (playerMouse.isLeftClicked()) {
+			//Hitting the block if it's nearby
+			if(chunk.getBlockAABB(x,y) != null && colBox.isNearby(chunk.getBlockAABB(x,y)))
+				chunk.hitBlock(x,y);
+		}
+		if (playerMouse.isRightClicked()){
+			//Placing the block if the mouse is near to the player
+			if(colBox.isNearby(playerMouse.getRelativeX(),playerMouse.getRelativeY()))
+				chunk.placeBlock(x, y, RegisterBlocks.dirt, false);
+		}
 	}
 	
 	@Override
