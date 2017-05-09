@@ -13,26 +13,12 @@ public class GameInstance implements IDefaultGame
 {
 	public World world;
 	public IGui currentScreen;
-	private static GameInstance instance;
-	
-	public GameInstance()
-	{
-		instance = this;
-	}
-	
+
 	@Override
 	public void init()
 	{
-<<<<<<< HEAD
-		long seed = 1234567891L;
-		world = Main.isServer? new WorldServer(seed) : new WorldClient(seed);
-		
-		world.init();
-		
 		GameInstanceHandler.setGameInstance(this);
-=======
 		displayGui(new GuiMainMenu());
->>>>>>> refs/remotes/origin/master
 	}
 
 	@Override
@@ -70,11 +56,6 @@ public class GameInstance implements IDefaultGame
 		world = Main.isServer? new WorldServer(seed) : new WorldClient(seed);
 		world.init();
 	}
-	
-	public static GameInstance get()
-	{
-		return instance;
-	}
 
 	public void displayGui(IGui gui)
 	{
@@ -84,6 +65,11 @@ public class GameInstance implements IDefaultGame
 		{
 			gui.init();
 		}
+	}
+
+	public static GameInstance get()
+	{
+		return GameInstanceHandler.getGameInstance();
 	}
 }
 
