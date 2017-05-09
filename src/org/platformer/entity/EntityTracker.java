@@ -1,7 +1,5 @@
 package org.platformer.entity;
 
-import org.platformer.register.RegisterRenders;
-
 import java.util.HashMap;
 
 public class EntityTracker

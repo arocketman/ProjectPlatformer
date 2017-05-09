@@ -7,6 +7,8 @@ import static org.lwjgl.opengl.GL11.glEndList;
 import static org.lwjgl.opengl.GL11.glGenLists;
 import static org.lwjgl.opengl.GL11.glNewList;
 
+import java.util.Iterator;
+
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Graphics;
@@ -16,7 +18,11 @@ import org.platformer.block.Block;
 import org.platformer.data.Inventory;
 import org.platformer.data.Item;
 import org.platformer.data.PlayerConfiguration;
-import org.platformer.entity.*;
+import org.platformer.entity.Entity;
+import org.platformer.entity.EntityItem;
+import org.platformer.entity.EntityPlayer;
+import org.platformer.entity.EntityPlayerLocal;
+import org.platformer.entity.EntityTracker;
 import org.platformer.entity.EntityTracker.Map;
 import org.platformer.register.RegisterBlocks;
 import org.platformer.register.RegisterRenders;
@@ -26,8 +32,6 @@ import org.platformer.render.RenderEntity;
 import org.platformer.utils.AABB;
 import org.platformer.utils.RenderUtils;
 import org.platformer.world.chunk.Chunk;
-
-import java.util.Iterator;
 
 public class WorldClient extends WorldServer
 {
@@ -48,7 +52,7 @@ public class WorldClient extends WorldServer
 		camera = new Camera(4f,0.005f);
 		camera.translateX = 0;
 		camera.translateY = 0;
-		camera.smoothMovement = true;
+		camera.smoothMovement = false;
 		super.init();
 		
 		WorldClientHandler.setWorldClient(this);

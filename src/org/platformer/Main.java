@@ -5,6 +5,7 @@ import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.platformer.lang.Localization;
 import org.platformer.register.RegisterBlocks;
 import org.platformer.register.RegisterKeybinds;
 import org.platformer.register.RegisterRenders;
@@ -32,6 +33,7 @@ public class Main extends BasicGame
     @Override
     public void init(GameContainer container) throws SlickException
     {
+    	Localization.init();
     	RegisterWorldGenerators.init();
     	RegisterTextures.init();
     	RegisterKeybinds.init();
@@ -75,6 +77,7 @@ public class Main extends BasicGame
             app.setDisplayMode(displayWidth, displayHeight, false);
             app.setAlwaysRender(true);
             app.setTargetFrameRate(60);
+            app.setShowFPS(false);
             app.start();
         }
         catch (SlickException e)
