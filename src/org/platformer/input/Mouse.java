@@ -42,6 +42,22 @@ public class Mouse {
 	}
 	
 	private void consoleOutput() {
-		System.out.printf("X-Coord: %s\nY-Coord: %s\n\n", relativeCoordinates[0], relativeCoordinates[1]);
+		//System.out.printf("X-Coord: %s\nY-Coord: %s\n\n", relativeCoordinates[0], relativeCoordinates[1]);
+	}
+
+	/**
+	 * Gets the x coordinate relative to the world
+	 * @return
+     */
+	public float getRelativeX(){
+		return relativeCoordinates[0];
+	}
+
+	/**
+	 * Gets the y coordinate relative to the world
+	 * @return
+     */
+	public float getRelativeY(){
+		return relativeCoordinates[1];
 	}
 }

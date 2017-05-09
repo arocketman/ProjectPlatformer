@@ -97,21 +97,9 @@ public class WorldClient extends WorldServer
 		float mouseY = mouse[1];
 		int chunkX = (int) Math.floor(mouseX/(16*32));
 		int chunkY = (int) Math.floor(mouseY/(16*32));
-		int x = (int) Math.floor((mouseX)/16f)-(chunkX*(32));
-		int y = (int) Math.floor((mouseY)/16f)-(chunkY*(32));
 		Chunk chunk = getChunk(chunkX,chunkY);
 		if(chunk == null)return;
 
-		if(i == 1)
-		{
-			if(localPlayer.colBox.isNearby(mouseX,mouseY))
-				chunk.placeBlock(x, y, RegisterBlocks.dirt, false);
-		}
-		else if(i == 0)
-		{
-			if(chunk.getBlockAABB(x,y) != null && localPlayer.colBox.isNearby(chunk.getBlockAABB(x,y)))
-				chunk.hitBlock(x,y);
-		}
 		// testing the add of an item to the player's inventory
 		// on click, removes the item and puts into the player's inventory
 		else if(i == 2)

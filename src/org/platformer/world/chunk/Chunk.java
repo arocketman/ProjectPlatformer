@@ -157,7 +157,7 @@ public class Chunk
 	{
 		for(int i=0;i<light.length;i++)
 		{
-			light[i] = 0;
+			light[i] = 200;
 		}
 
 		Chunk chk = null; //first chunk on the y axis that contains blocks
@@ -290,6 +290,11 @@ public class Chunk
 		return new int[]{chunkX*(32*16),chunkY*(32*16)};
 	}
 
+	/**
+	 * Finds a block and removes 1HP from it.
+	 * @param x x coordinate of the block
+	 * @param y y coordinate of the block
+     */
 	public void hitBlock(int x, int y) {
 		int i = (y*32)+x;
 		blocks[i].removeHealth(1);
