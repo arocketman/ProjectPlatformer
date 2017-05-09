@@ -99,9 +99,32 @@ public class Inventory
 
     }
 
+    /**
+     * Returns true if the inventory is empty.
+     *
+     * @return true if the inventory is empty
+     */
     public boolean isEmpty() {
 
         return items.size() == 0;
+
+    }
+
+    /**
+     * Returns the item from the inventory at a given position
+     * @param index
+     * @return
+     */
+    public Item getItem(int index) {
+
+        // makes sure we're not out of bounds
+        if(index < getItems().size() && index >= 0) {
+
+            return getItems().get(index);
+
+        }
+
+        return null;
 
     }
 
