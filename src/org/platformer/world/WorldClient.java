@@ -72,16 +72,17 @@ public class WorldClient extends WorldServer
 		EntityItem item2 = new EntityItem(this, "item2", new Item("item2", "missingtexture"));
 		EntityItem item3 = new EntityItem(this, "item3", new Item("item3", "missingtexture"));
 	}
-	
+
 	public static WorldClient getWorld() {
 		return WorldClientHandler.getWorldClient();
 	}
+
 
 	@Override
 	public void update()
 	{
 		super.update();
-		
+
 		if(Mouse.isButtonDown(2)) clickMouse(2); // testing the add of an item to the inventory
 	}
 
@@ -109,7 +110,7 @@ public class WorldClient extends WorldServer
 		else if(i == 0)
 		{
 			if(chunk.getBlockAABB(x,y) != null && localPlayer.colBox.isNearby(chunk.getBlockAABB(x,y)))
-				chunk.removeBlock(x, y, false);
+				chunk.hitBlock(x,y);
 		}
 		// testing the add of an item to the player's inventory
 		// on click, removes the item and puts into the player's inventory
@@ -201,10 +202,10 @@ public class WorldClient extends WorldServer
 							int by = a/32;
 							int bx = (a)-(by*32);
 							int id2 = chunks[i].backgroundBlocks[a];
-							int id = chunks[i].blocks[a];
+							int id = chunks[i].blocks[a].getID();
 							int light = chunks[i].light[a];
 							float[] rgb = new float[]{1f,1f,1f};
-							
+
 							float lightValue = ((float)light)/255f;
 							rgb[0] = lightValue;
 							rgb[1] = lightValue;

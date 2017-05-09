@@ -15,7 +15,7 @@ public class Chunk
 	public int chunkX = 0;
 	public int chunkY = 0;
 	public AABB[] aabbPool = new AABB[1024];
-	public int[] blocks = new int[1024];
+	public Block[] blocks = new Block[1024];
 	public int[] backgroundBlocks = new int[1024];
 	public int[] light = new int[1024];
 	public boolean needsUpdate = true;
@@ -29,9 +29,10 @@ public class Chunk
 
 		for(int i=0;i<blocks.length;i++)
 		{
-			blocks[i] = -1;
+			blocks[i] = new Block(RegisterBlocks.air);
 			backgroundBlocks[i] = -1;
 		}
+
 
 		entities = new LinkedList<>();
 
@@ -78,19 +79,15 @@ public class Chunk
 	{
 		int i = (y * 32) + x;
 		//Make sure we're not placing the block on an existing one.
-		if(!background && blocks[i] != -1)
+		if(!background && blocks[i].getID() != -1)
 			return;
 		if(background && backgroundBlocks[i] != -1)
 			return;
 		
 		if(background)
-		{
 			backgroundBlocks[i] = block.getID();
-		}
 		else
-		{
-			blocks[i] = block.getID();
-		}
+			blocks[i] = new Block(RegisterBlocks.get(block.getID()));
 		needsUpdate = true;
 	}
 
@@ -103,13 +100,9 @@ public class Chunk
 	{
 		int i = (y * 32) + x;
 		if(background)
-		{
 			backgroundBlocks[i] = -1;
-		}
 		else
-		{
-			blocks[i] = -1;
-		}
+			blocks[i].setBlockID(-1);
 		needsUpdate = true;
 	}
 
@@ -119,7 +112,7 @@ public class Chunk
 		if(background && i >= blocks.length)return -1;
 		if(!background && i >= backgroundBlocks.length)return -1;
 		if(i < 0)return -1;
-		return (background)? backgroundBlocks[i] : blocks[i];
+		return (background)? backgroundBlocks[i] : blocks[i].getID();
 	}
 
 	public AABB getBlockAABB(int x, int y){
@@ -128,7 +121,7 @@ public class Chunk
 		if(i < 0)return null;
 		return aabbPool[i];
 	}
-	
+
 	public int getLight(int x, int y)
 	{
 		int i = (y * 32) + x;
@@ -143,7 +136,7 @@ public class Chunk
 		updateAABB(world);
 		updateLighting(world);
 	}
-	
+
 	public boolean isEmpty()
 	{
 		for(int x=0;x<32;x++)
@@ -152,11 +145,11 @@ public class Chunk
 			{
 				int blockid = getBlock(x,y,false);
 				int blockidbg = getBlock(x,y,true);
-				
+
 				if(blockid != -1 || blockidbg != -1)return false;
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -166,7 +159,7 @@ public class Chunk
 		{
 			light[i] = 0;
 		}
-		
+
 		Chunk chk = null; //first chunk on the y axis that contains blocks
 		for(int y=0;y<32;y++)
 		{
@@ -176,7 +169,7 @@ public class Chunk
 				break;
 			}
 		}
-		
+
 		if(!this.isEmpty() && chk == this)//if first chunk is ours, then populate all air with light until it hits a block
 		{
 			for(int x=0;x<32;x++)
@@ -185,9 +178,9 @@ public class Chunk
 				for(int y=0;y<32;y++)
 				{
 					int i = (y * 32) + x;
-					
+
 					int blockid = getBlock(x,y,false);
-					
+
 					if(blockid != -1)
 					{
 						if(first)
@@ -205,7 +198,7 @@ public class Chunk
 				}
 			}
 		}
-		
+
 		if(!this.isEmpty())
 		{
 			for(int p=0;p<4;p++) //how many passes / iterations
@@ -254,7 +247,7 @@ public class Chunk
 			int bx = (i)-(by*32);
 			float blockX = cX+(bx*16);
 			float blockY = cY+(by*16);
-			if(blocks[i] != -1)
+			if(blocks[i].getID() != -1)
 			{
 				boolean[] blocksAt = new boolean[4]; //up, down, left, right
 				blocksAt[0] = (world.getBlock((int)blockX, (int)blockY, bx,by-1, false) != -1);
@@ -276,7 +269,7 @@ public class Chunk
 				if(!flag && (blocksAt[0] && !blocksAt[1] && !blocksAt[2] && !blocksAt[3]))flag = true;
 				if(!flag && (!blocksAt[0] && !blocksAt[1] && !blocksAt[2] && !blocksAt[3]))flag = true;
 
-				Block block = RegisterBlocks.get(blocks[i]);
+				Block block = RegisterBlocks.get(blocks[i].getID());
 				AABB colBox = block.getCollisionBox().duplicate();
 				aabbPool[i] = colBox;
 				if(aabbPool[i] != null)
@@ -295,5 +288,13 @@ public class Chunk
 	public int[] getWorldPosition()
 	{
 		return new int[]{chunkX*(32*16),chunkY*(32*16)};
+	}
+
+	public void hitBlock(int x, int y) {
+		int i = (y*32)+x;
+		blocks[i].removeHealth(1);
+		if(blocks[i].getHealth()<=0)
+			removeBlock(x,y,false);
+
 	}
 }
