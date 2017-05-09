@@ -46,7 +46,7 @@ public class Entity implements ITrackable
 	 */
 	protected void updateChunkPosition()
 	{
-		if(currentChunk == null)return;
+		if(currentChunk == null) currentChunk = world.getChunkWorldPos((int)posX, (int)posY);
 	
 		currentChunk.removeEntity(this);
 		currentChunk = world.getChunkWorldPos((int)posX, (int)posY);
