@@ -1,5 +1,8 @@
 package org.platformer;
 
+import java.util.Calendar;
+import java.util.Random;
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
@@ -16,9 +19,11 @@ public class Main extends BasicGame
 {
 	public static String TITLE = "Platformer";
 	public static String VERSION = "0.1";
+	public static boolean DEBUG = true;
 	public static int displayWidth = 800;
 	public static int displayHeight = 600;
 	public static boolean isServer = false;
+	private static AppGameContainer gameContainer;
 
 	public GameInstance gameInstance = new GameInstance();
 	
@@ -73,16 +78,25 @@ public class Main extends BasicGame
     {
         try
         {
-            AppGameContainer app = new AppGameContainer(new Main());
-            app.setDisplayMode(displayWidth, displayHeight, false);
-            app.setAlwaysRender(true);
-            app.setTargetFrameRate(60);
-            app.setShowFPS(false);
-            app.start();
+        	gameContainer = new AppGameContainer(new Main());
+            gameContainer.setDisplayMode(displayWidth, displayHeight, false);
+            gameContainer.setAlwaysRender(true);
+            gameContainer.setTargetFrameRate(60);
+            gameContainer.setShowFPS(false);
+            gameContainer.start();
         }
         catch (SlickException e)
         {
             e.printStackTrace();
         }
     }
+
+    private static Random random = new Random();
+	public static int getFPS()
+	{
+		Calendar cal = Calendar.getInstance();
+		random.setSeed(214998352+(cal.get(Calendar.MILLISECOND)/50));
+		int fakeFastUpdate = random.nextInt(5);
+		return Math.min(gameContainer.getFPS()+fakeFastUpdate,60);
+	}
 }

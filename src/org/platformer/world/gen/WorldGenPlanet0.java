@@ -58,9 +58,9 @@ public class WorldGenPlanet0 implements IWorldGen
 		int targetOffset = 0;
 		int offsetHeight2 = 0;
 		
-		float caveSize = 0.3f; //0 = biggest, 0.9 = smallest
-		int frequency = 256+64; //How 'smooth / big' the generated noise is.
-		int roughness = 8; //terrain roughness
+		float caveSize = 0.1f; //0 = biggest, 0.9 = smallest
+		int frequency = 256+128; //How 'smooth / big' the generated noise is.
+		int roughness = 16; //terrain roughness
 
 		for(int i=0;i<maxWidth;i++) //go through all chunks x axis
 		{
@@ -71,7 +71,7 @@ public class WorldGenPlanet0 implements IWorldGen
 				for(int x=0;x<32;x++) //go through all blocks in the chunk x axis
 				{
 					/** Set target offset if offsetHeight2 equals*/
-					if(offsetHeight2 == targetOffset)targetOffset = random.nextInt(roughness+1)-(roughness/2);
+					if((x & 4) == 0 && offsetHeight2 == targetOffset)targetOffset = random.nextInt(roughness+1)-(roughness/2);
 					
 					/** Increment towards targetOffset, this creates the bumpy terrain */
 					if(offsetHeight2 < targetOffset)offsetHeight2+=random.nextInt(4);

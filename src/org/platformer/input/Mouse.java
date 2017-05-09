@@ -3,14 +3,14 @@ package org.platformer.input;
 public class Mouse {
 	/** 
 	 * The coordinates of the mouse relative to the screen <br>
-	 * 0 : x-coordinate <br>
-	 * 1 : y-coordinate
+	 * index 0 : x-coordinate <br>
+	 * index 1 : y-coordinate
 	 * */
 	private int[] actualCoordinates = new int[2];
 	/** 
 	 * The coordinates relative to the world <br>
-	 * 0 : x-coordinate <br>
-	 * 1 : y-coordinate
+	 * index 0 : x-coordinate <br>
+	 * index 1 : y-coordinate
 	 * */
 	private float[] relativeCoordinates = new float[2];
 	

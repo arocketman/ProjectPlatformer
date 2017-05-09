@@ -42,4 +42,6 @@ public class EntityPlayerLocal extends EntityPlayer
 		mouseAngle = MiscUtils.pointTowardsPosition(posX, posY-20, ((WorldClient)world).getMouseInWorld()[0], ((WorldClient)world).getMouseInWorld()[1]);
 		super.update();
 	}
+	
+	
 }

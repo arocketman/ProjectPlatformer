@@ -7,11 +7,14 @@ import org.platformer.animation.anims.AnimPlayerLegs;
 import org.platformer.data.PlayerConfiguration;
 import org.platformer.utils.AABB;
 import org.platformer.world.World;
+import org.platformer.input.Mouse;
 
 public class EntityPlayer extends Entity
 {
 	public AnimationEntity animationEntity;
 	public float mouseAngle;
+	
+	private Mouse playerMouse;
 
 	//Nomitso add
 	private PlayerConfiguration config;
@@ -40,6 +43,11 @@ public class EntityPlayer extends Entity
 		findWorldSpawn();
 		teleportToSpawn();
 		setupAnimations();
+		createMouse();
+	}
+	
+	private void createMouse() {
+		playerMouse = new Mouse();
 	}
 
 	/**

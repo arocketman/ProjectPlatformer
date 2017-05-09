@@ -2,6 +2,7 @@ package org.platformer;
 
 import org.newdawn.slick.Graphics;
 import org.platformer.gui.GuiMainMenu;
+import org.platformer.gui.GuiOverlay;
 import org.platformer.gui.IGui;
 import org.platformer.utils.IDefaultGame;
 import org.platformer.world.World;
@@ -12,21 +13,18 @@ public class GameInstance implements IDefaultGame
 {
 	public World world;
 	public IGui currentScreen;
-	private static GameInstance instance;
-	
-	public GameInstance()
-	{
-		instance = this;
-	}
-	
+
 	@Override
 	public void init()
 	{
+<<<<<<< HEAD
 		long seed = 1234567891L;
 		world = Main.isServer? new WorldServer(seed) : new WorldClient(seed);
 		
 		world.init();
 		
+=======
+>>>>>>> refs/remotes/origin/master
 		GameInstanceHandler.setGameInstance(this);
 		displayGui(new GuiMainMenu());
 	}
@@ -62,13 +60,9 @@ public class GameInstance implements IDefaultGame
 	public void startWorld()
 	{
 		long seed = 1234567891L;
+		displayGui(new GuiOverlay());
 		world = Main.isServer? new WorldServer(seed) : new WorldClient(seed);
 		world.init();
-	}
-	
-	public static GameInstance get()
-	{
-		return instance;
 	}
 
 	public void displayGui(IGui gui)
@@ -79,6 +73,11 @@ public class GameInstance implements IDefaultGame
 		{
 			gui.init();
 		}
+	}
+
+	public static GameInstance get()
+	{
+		return GameInstanceHandler.getGameInstance();
 	}
 }
 
