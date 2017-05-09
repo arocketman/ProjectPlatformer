@@ -14,6 +14,8 @@ import org.platformer.register.RegisterBlocks;
 
 public class EntityPlayer extends Entity
 {
+	public float playerSize_w = 12.925f;
+	public float playerSize_h = 47.925f;
 	public AnimationEntity animationEntity;
 	public float mouseAngle;
 	
@@ -25,7 +27,7 @@ public class EntityPlayer extends Entity
 	public EntityPlayer(World world, String hash)
 	{
 		super(world, hash);
-		colBox = new AABB(15.925f,62.925f);
+		colBox = new AABB(playerSize_w,playerSize_h);
 		findWorldSpawn();
 		teleportToSpawn();
 		setupAnimations();
@@ -41,7 +43,7 @@ public class EntityPlayer extends Entity
 	public EntityPlayer(World world, String hash, PlayerConfiguration config)
 	{
 		super(world, hash);
-		colBox = new AABB(15.925f,62.925f);
+		colBox = new AABB(playerSize_w,playerSize_h);
 		this.config = config;
 		findWorldSpawn();
 		teleportToSpawn();
