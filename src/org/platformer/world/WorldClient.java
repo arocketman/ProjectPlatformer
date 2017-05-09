@@ -107,7 +107,7 @@ public class WorldClient extends WorldServer
 		else if(i == 0)
 		{
 			if(chunk.getBlockAABB(x,y) != null && localPlayer.colBox.isNearby(chunk.getBlockAABB(x,y)))
-				chunk.removeBlock(x, y);
+				chunk.hitBlock(x, y);
 		}
 		// testing the add of an item to the player's inventory
 		// on click, removes the item and puts into the player's inventory
@@ -197,8 +197,8 @@ public class WorldClient extends WorldServer
 						{
 							int by = a/32;
 							int bx = (a)-(by*32);
-							int id2 = backgroundChunks[i].blocks[a];
-							int id = chunks[i].blocks[a];
+							int id2 = backgroundChunks[i].blocks[a].getID();
+							int id = chunks[i].blocks[a].getID();
 							if(id2 != -1 && id == -1)
 							{
 								Block block = RegisterBlocks.get(id2);

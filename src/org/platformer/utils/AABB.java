@@ -245,8 +245,8 @@ public class AABB
 	}
 
 	/**
-	 * Checks wheter or not this AABB is in range of the passed AABB.
-	 * As of right now the threshhold distance is specified in a constant defined in this same class.
+	 * Checks whether or not this AABB is in range of the passed AABB.
+	 * As of right now the threshold distance is specified in a constant defined in this same class.
 	 * @param blockAABB the AABB you want to check is nearby
 	 * @return true if the two AABB are nearby, false otherwise.
      */

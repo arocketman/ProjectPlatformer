@@ -14,7 +14,7 @@ public class Chunk
 	public int chunkX = 0;
 	public int chunkY = 0;
 	public AABB[] aabbPool = new AABB[1024];
-	public int[] blocks = new int[1024];
+	public Block[] blocks = new Block[1024];
 	public boolean needsUpdate = true;
 
 
@@ -27,7 +27,7 @@ public class Chunk
 
 		for(int i=0;i<blocks.length;i++)
 		{
-			blocks[i] = -1;
+			blocks[i] = new Block(-1,"missingtexture",0);
 		}
 
 		entities = new LinkedList<>();
@@ -75,9 +75,9 @@ public class Chunk
 	{
 		int i = (y * 32) + x;
 		//Make sure we're not placing the block on an existing one.
-		if(blocks[i] != -1)
+		if(blocks[i].getID() != -1)
 			return;
-		blocks[i] = block.getID();
+		blocks[i] = new Block(RegisterBlocks.get(block.getID()));
 		needsUpdate = true;
 	}
 
@@ -89,7 +89,7 @@ public class Chunk
 	public void removeBlock(int x, int y)
 	{
 		int i = (y * 32) + x;
-		blocks[i] = -1;
+		blocks[i].setBlockID(-1);
 		needsUpdate = true;
 	}
 
@@ -98,7 +98,7 @@ public class Chunk
 		int i = (y * 32) + x;
 		if(i >= blocks.length)return -1;
 		if(i < 0)return -1;
-		return blocks[i];
+		return blocks[i].getID();
 	}
 
 	public AABB getBlockAABB(int x, int y){
@@ -129,7 +129,7 @@ public class Chunk
 			int bx = (i)-(by*32);
 			float blockX = cX+(bx*16);
 			float blockY = cY+(by*16);
-			if(blocks[i] != -1)
+			if(blocks[i].getID() != -1)
 			{
 				boolean[] blocksAt = new boolean[4]; //up, down, left, right
 				blocksAt[0] = (world.getBlock((int)blockX, (int)blockY, bx,by-1) != -1);
@@ -151,7 +151,7 @@ public class Chunk
 				if(!flag && (blocksAt[0] && !blocksAt[1] && !blocksAt[2] && !blocksAt[3]))flag = true;
 				if(!flag && (!blocksAt[0] && !blocksAt[1] && !blocksAt[2] && !blocksAt[3]))flag = true;
 
-				Block block = RegisterBlocks.get(blocks[i]);
+				Block block = RegisterBlocks.get(blocks[i].getID());
 				AABB colBox = block.getCollisionBox().duplicate();
 				aabbPool[i] = colBox;
 				if(aabbPool[i] != null)
@@ -170,5 +170,13 @@ public class Chunk
 	public int[] getWorldPosition()
 	{
 		return new int[]{chunkX*(32*16),chunkY*(32*16)};
+	}
+
+	public void hitBlock(int x, int y) {
+		int i = (y * 32) + x;
+		blocks[i].removeHealth(1);
+		System.out.println(blocks[i].getHealth());
+		if(blocks[i].getHealth() <= 0)
+			removeBlock(x,y);
 	}
 }
