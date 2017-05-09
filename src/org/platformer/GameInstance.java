@@ -33,3 +33,15 @@ public class GameInstance implements IDefaultGame
 		world.render(g);
 	}
 }
+
+class GameInstanceHandler {
+	private static GameInstance gameInstance;
+	
+	public static void setGameInstance(GameInstance p_GameInstance) {
+		gameInstance = p_GameInstance;
+	}
+	
+	public static GameInstance getGameInstance() {
+		return gameInstance;
+	}
+}
