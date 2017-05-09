@@ -5,9 +5,9 @@ import org.newdawn.slick.Graphics;
 import org.platformer.GameInstance;
 import org.platformer.Main;
 import org.platformer.entity.EntityPlayer;
-import org.platformer.entity.EntityPlayerLocal;
 import org.platformer.entity.EntityTracker;
 import org.platformer.entity.EntityTracker.Map;
+import org.platformer.register.RegisterKeybinds;
 import org.platformer.register.RegisterTextures;
 import org.platformer.utils.GuiUtils;
 import org.platformer.utils.GuiUtils.ALIGN;
@@ -28,6 +28,10 @@ public class GuiOverlay extends GuiScreen implements IGuiButtonListener
 	@Override
 	public void update()
 	{
+		if(RegisterKeybinds.escape.isPressedOnce())
+		{
+			GameInstance.get().displayGui(new GuiMainMenu());
+		}
 		super.update();
 	}
 
