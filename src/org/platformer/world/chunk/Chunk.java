@@ -74,6 +74,9 @@ public class Chunk
 	public void placeBlock(int x, int y, Block block)
 	{
 		int i = (y * 32) + x;
+		//Make sure we're not placing the block on an existing one.
+		if(blocks[i] != -1)
+			return;
 		blocks[i] = block.getID();
 		needsUpdate = true;
 	}
