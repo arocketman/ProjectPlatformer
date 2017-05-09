@@ -13,7 +13,7 @@ public class EntityTracker
 	 * Adds entity to entity tracker map
 	 * @param ent - Entity to track
 	 */
-	public static void addEntityTracker(Entity ent)
+	public synchronized static void addEntityTracker(Entity ent)
 	{
 
 		entityMap.put(ent.getHash(), ent);
@@ -45,7 +45,7 @@ public class EntityTracker
 	 * Remove entity from entity tracker map
 	 * @param ent
 	 */
-	public static void removeEntity(Entity ent)
+	public synchronized static void removeEntity(Entity ent)
 	{
 		if(playerMap.containsKey(ent.getHash()))
 		{
