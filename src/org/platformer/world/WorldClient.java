@@ -72,14 +72,16 @@ public class WorldClient extends WorldServer
 		EntityItem item2 = new EntityItem(this, "item2", new Item("item2", "missingtexture"));
 		EntityItem item3 = new EntityItem(this, "item3", new Item("item3", "missingtexture"));
 	}
+	
+	public static WorldClient getWorld() {
+		return WorldClientHandler.getWorldClient();
+	}
 
 	@Override
 	public void update()
 	{
 		super.update();
-
-		if(Mouse.isButtonDown(0)) clickMouse(0);
-		if(Mouse.isButtonDown(1)) clickMouse(1);
+		
 		if(Mouse.isButtonDown(2)) clickMouse(2); // testing the add of an item to the inventory
 	}
 

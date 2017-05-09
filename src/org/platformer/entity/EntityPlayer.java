@@ -7,13 +7,17 @@ import org.platformer.animation.anims.AnimPlayerLegs;
 import org.platformer.data.PlayerConfiguration;
 import org.platformer.utils.AABB;
 import org.platformer.world.World;
+import org.platformer.world.WorldClient;
+import org.platformer.world.chunk.Chunk;
+import org.platformer.input.Mouse;
+import org.platformer.register.RegisterBlocks;
 
 public class EntityPlayer extends Entity
 {
-	public float playerSize_w = 12.925f;
-	public float playerSize_h = 47.925f;
 	public AnimationEntity animationEntity;
 	public float mouseAngle;
+	
+	private Mouse playerMouse;
 
 	//Nomitso add
 	private PlayerConfiguration config;
@@ -21,7 +25,7 @@ public class EntityPlayer extends Entity
 	public EntityPlayer(World world, String hash)
 	{
 		super(world, hash);
-		colBox = new AABB(playerSize_w,playerSize_h);
+		colBox = new AABB(15.925f,62.925f);
 		findWorldSpawn();
 		teleportToSpawn();
 		setupAnimations();
@@ -37,11 +41,16 @@ public class EntityPlayer extends Entity
 	public EntityPlayer(World world, String hash, PlayerConfiguration config)
 	{
 		super(world, hash);
-		colBox = new AABB(playerSize_w,playerSize_h);
+		colBox = new AABB(15.925f,62.925f);
 		this.config = config;
 		findWorldSpawn();
 		teleportToSpawn();
 		setupAnimations();
+		createMouse();
+	}
+	
+	private void createMouse() {
+		playerMouse = new Mouse();
 	}
 
 	/**
@@ -74,11 +83,31 @@ public class EntityPlayer extends Entity
 		animationEntity.addAnimation("anim_player", new Animation[]{new AnimPlayerLegs(),new AnimPlayerArms()});
 		animationEntity.remapIDToExisting("anim_player", 1);
 	}
-
+	
+	// Testing
+	private void checkInput() {
+		int chunkX = (int) Math.floor(playerMouse.getRelativeLocation()[0]/(16*32));
+		int chunkY = (int) Math.floor(playerMouse.getRelativeLocation()[1]/(16*32));
+		int x = (int) Math.floor((playerMouse.getRelativeLocation()[0])/16f)-(chunkX*(32));
+		int y = (int) Math.floor((playerMouse.getRelativeLocation()[1])/16f)-(chunkY*(32));
+		
+		Chunk chunk = WorldClient.getWorld().getChunk(chunkX,chunkY);
+		if (chunk == null)
+			return;
+		
+		if (playerMouse.isLeftClicked())
+			chunk.removeBlock(x, y, false);
+		if (playerMouse.isRightClicked())
+			chunk.placeBlock(x, y, RegisterBlocks.dirt, false);
+	}
+	
 	@Override
 	public void update()
 	{
 		if(animationEntity != null)animationEntity.update();
+		playerMouse.update();
 		super.update();
+		
+		checkInput();
 	}
 }

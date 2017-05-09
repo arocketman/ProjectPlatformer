@@ -17,6 +17,11 @@ public class GameInstance implements IDefaultGame
 	@Override
 	public void init()
 	{
+		long seed = 1234567891L;
+		world = Main.isServer? new WorldServer(seed) : new WorldClient(seed);
+		
+		world.init();
+		
 		GameInstanceHandler.setGameInstance(this);
 		displayGui(new GuiMainMenu());
 	}
