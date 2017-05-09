@@ -1,10 +1,14 @@
 package org.platformer.entity;
 
+import org.platformer.data.Inventory;
+import org.platformer.data.Item;
 import org.platformer.data.PlayerConfiguration;
 import org.platformer.register.RegisterKeybinds;
 import org.platformer.utils.MiscUtils;
 import org.platformer.world.World;
 import org.platformer.world.WorldClient;
+
+import java.util.List;
 
 public class EntityPlayerLocal extends EntityPlayer
 {
@@ -33,6 +37,25 @@ public class EntityPlayerLocal extends EntityPlayer
 	{
 		if(RegisterKeybinds.move_left.isPressed()) motionX = -4f;
 		if(RegisterKeybinds.move_right.isPressed()) motionX = 4f;
+
+		// by pressing 'g' we drop the last picked item
+		if(RegisterKeybinds.letter("g").isPressedOnce()) {
+
+			Inventory inventory = getPlayerConfiguration().getInventory();
+
+			if(!inventory.isEmpty())
+			{
+
+				// removes the last item from the inventory
+				List<Item> items = inventory.getItems();
+				Item item = items.get(items.size() - 1);
+				inventory.removeItem(item);
+
+				new EntityItem(world, item, posX, posY);		// adds the new entity to the world
+
+			}
+
+		}
 
 		if(onGround)
 		{
