@@ -101,6 +101,13 @@ public class Chunk
 		return blocks[i];
 	}
 
+	public AABB getBlockAABB(int x, int y){
+		int i = (y * 32) + x;
+		if(i >= aabbPool.length)return null;
+		if(i < 0)return null;
+		return aabbPool[i];
+	}
+
 	public void onUpdate(World world)
 	{
 		needsUpdate = false;
