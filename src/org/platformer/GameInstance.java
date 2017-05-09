@@ -17,6 +17,8 @@ public class GameInstance implements IDefaultGame
 		world = Main.isServer? new WorldServer(seed) : new WorldClient(seed);
 		
 		world.init();
+		
+		GameInstanceHandler.setGameInstance(this);
 	}
 
 	@Override

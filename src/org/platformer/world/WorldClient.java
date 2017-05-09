@@ -50,6 +50,8 @@ public class WorldClient extends WorldServer
 		camera.translateY = 0;
 		camera.smoothMovement = true;
 		super.init();
+		
+		WorldClientHandler.setWorldClient(this);
 	}
 
 	@Override
