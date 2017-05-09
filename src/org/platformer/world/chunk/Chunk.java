@@ -1,13 +1,13 @@
 package org.platformer.world.chunk;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.platformer.block.Block;
 import org.platformer.entity.Entity;
 import org.platformer.register.RegisterBlocks;
 import org.platformer.utils.AABB;
 import org.platformer.world.World;
-
-import java.util.LinkedList;
-import java.util.List;
 
 public class Chunk
 {
