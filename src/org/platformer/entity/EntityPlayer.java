@@ -20,8 +20,6 @@ public class EntityPlayer extends Entity
 	public float mouseAngle;
 	
 	private Mouse playerMouse;
-
-	//Nomitso add
 	private PlayerConfiguration config;
 
 	public EntityPlayer(World world, String hash)

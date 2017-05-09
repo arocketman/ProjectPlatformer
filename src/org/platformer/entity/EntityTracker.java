@@ -1,13 +1,13 @@
 package org.platformer.entity;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class EntityTracker
 {
 	public enum Map{ENTITIES,PLAYERS}
 
-	private static HashMap<String,Entity> entityMap = new HashMap<String,Entity>();
-	private static HashMap<String,Entity> playerMap = new HashMap<String,Entity>();
+	private static ConcurrentHashMap<String,Entity> entityMap = new ConcurrentHashMap<String,Entity>();
+	private static ConcurrentHashMap<String,Entity> playerMap = new ConcurrentHashMap<String,Entity>();
 
 	/**
 	 * Adds entity to entity tracker map
@@ -60,7 +60,7 @@ public class EntityTracker
 	 * @param mapType - Map Type (ENTITIES or PLAYERS)
 	 * @return
 	 */
-	public static HashMap<String,Entity> getEntityMap(Map mapType)
+	public static ConcurrentHashMap<String,Entity> getEntityMap(Map mapType)
 	{
 		if(mapType == Map.PLAYERS)
 		{

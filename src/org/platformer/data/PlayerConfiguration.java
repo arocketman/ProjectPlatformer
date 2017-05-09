@@ -17,6 +17,7 @@ public class PlayerConfiguration {
     private int maxHealth;
     private int currentHealth;
     private Inventory inventory;
+    private Equipment equipment;
 
     /**
      * Default constructor
@@ -30,11 +31,12 @@ public class PlayerConfiguration {
      * @param currentHealth the player's current health
      * @param inventory
      */
-    public PlayerConfiguration(int maxHealth, int currentHealth, Inventory inventory) {
+    public PlayerConfiguration(int maxHealth, int currentHealth, Inventory inventory, Equipment equipment) {
 
         this.maxHealth = maxHealth;
         this.currentHealth = currentHealth;
         this.inventory = inventory;
+        this.equipment = equipment;
 
     }
 
@@ -86,6 +88,7 @@ public class PlayerConfiguration {
      * Sets the player's inventory.
      *
      * @param inventory the player's inventory
+     * @see Inventory
      */
     public void setInventory(Inventory inventory) {
 
@@ -97,10 +100,35 @@ public class PlayerConfiguration {
      * Gets the player's inventory.
      *
      * @return the player's inventory
+     * @see Inventory
      */
     public Inventory getInventory() {
 
         return inventory;
+
+    }
+
+    /**
+     * Sets the player's equipment.
+     *
+     * @param equipment the player's equipment
+     * @see Equipment
+     */
+    public void setEquipment(Equipment equipment) {
+
+        this.equipment = equipment;
+
+    }
+
+    /**
+     * Gets the player's equipment.
+     *
+     * @return the player's equipment
+     * @see Equipment
+     */
+    public Equipment getEquipment() {
+
+        return equipment;
 
     }
 

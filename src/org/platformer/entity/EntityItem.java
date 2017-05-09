@@ -14,22 +14,40 @@ public class EntityItem extends Entity
      * Constructor
      *
      * @param world the world the entity is located in
-     * @param hash
      * @param item the entity's item data
      *
      * @see World
      * @see Item
      */
-    public EntityItem(World world, String hash, Item item)
+    public EntityItem(World world, Item item)
     {
 
-        super(world, hash);
+        super(world, item.getHash());
         colBox = new AABB(16f,16f);
         this.item = item;
 
         // used for tests
         findWorldSpawn();
         teleportToSpawn();
+
+    }
+
+    /**
+     * Constructor with position
+     *
+     * @param world the world the entity is located in
+     * @param item the entity's item data
+     * @param posX entity's start position on the x-axis
+     * @param posY entity's start position on the y-axis
+     */
+    public EntityItem(World world, Item item, float posX, float posY)
+    {
+
+        super(world, item.getHash());
+        colBox = new AABB(16f,16f);
+        this.item = item;
+        colBox.posX = posX;
+        colBox.posY = posY;
 
     }
 
