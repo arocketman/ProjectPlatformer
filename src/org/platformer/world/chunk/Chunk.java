@@ -15,8 +15,8 @@ public class Chunk
 	public int chunkY = 0;
 	public AABB[] aabbPool = new AABB[1024];
 	public Block[] blocks = new Block[1024];
+	public int[] backgroundBlocks = new int[1024];
 	public boolean needsUpdate = true;
-
 
 	private List<Entity> entities;		// used to keep track of each entities in the chunk
 
@@ -26,9 +26,8 @@ public class Chunk
 		this.chunkY = chunkY;
 
 		for(int i=0;i<blocks.length;i++)
-		{
-			blocks[i] = new Block(-1,"missingtexture",0);
-		}
+			blocks[i] = new Block(RegisterBlocks.air);
+
 
 		entities = new LinkedList<>();
 
@@ -71,13 +70,19 @@ public class Chunk
 	 * @param y - Y pos range: 0-31
 	 * @param block - Block that we are placing
 	 */
-	public void placeBlock(int x, int y, Block block)
+	public void placeBlock(int x, int y, Block block, boolean background)
 	{
 		int i = (y * 32) + x;
 		//Make sure we're not placing the block on an existing one.
-		if(blocks[i].getID() != -1)
+		if(!background && blocks[i].getID() != -1)
 			return;
-		blocks[i] = new Block(RegisterBlocks.get(block.getID()));
+		if(background && backgroundBlocks[i] != -1)
+			return;
+		
+		if(background)
+			backgroundBlocks[i] = block.getID();
+		else
+			blocks[i] = new Block(RegisterBlocks.get(block.getID()));
 		needsUpdate = true;
 	}
 
@@ -86,19 +91,23 @@ public class Chunk
 	 * @param x - X pos range: 0-31
 	 * @param y - Y pos range: 0-31
 	 */
-	public void removeBlock(int x, int y)
+	public void removeBlock(int x, int y, boolean background)
 	{
 		int i = (y * 32) + x;
-		blocks[i].setBlockID(-1);
+		if(background)
+			backgroundBlocks[i] = -1;
+		else
+			blocks[i].setBlockID(-1);
 		needsUpdate = true;
 	}
 
-	public int getBlock(int x, int y)
+	public int getBlock(int x, int y, boolean background)
 	{
 		int i = (y * 32) + x;
-		if(i >= blocks.length)return -1;
+		if(background && i >= blocks.length)return -1;
+		if(!background && i >= backgroundBlocks.length)return -1;
 		if(i < 0)return -1;
-		return blocks[i].getID();
+		return (background)? backgroundBlocks[i] : blocks[i].getID();
 	}
 
 	public AABB getBlockAABB(int x, int y){
@@ -132,10 +141,10 @@ public class Chunk
 			if(blocks[i].getID() != -1)
 			{
 				boolean[] blocksAt = new boolean[4]; //up, down, left, right
-				blocksAt[0] = (world.getBlock((int)blockX, (int)blockY, bx,by-1) != -1);
-				blocksAt[1] = (world.getBlock((int)blockX, (int)blockY, bx,by+1) != -1);
-				blocksAt[2] = (world.getBlock((int)blockX, (int)blockY, bx-1,by) != -1);
-				blocksAt[3] = (world.getBlock((int)blockX, (int)blockY, bx+1,by) != -1);
+				blocksAt[0] = (world.getBlock((int)blockX, (int)blockY, bx,by-1, false) != -1);
+				blocksAt[1] = (world.getBlock((int)blockX, (int)blockY, bx,by+1, false) != -1);
+				blocksAt[2] = (world.getBlock((int)blockX, (int)blockY, bx-1,by, false) != -1);
+				blocksAt[3] = (world.getBlock((int)blockX, (int)blockY, bx+1,by, false) != -1);
 				boolean flag = false;
 
 				if(!flag && (blocksAt[0] && blocksAt[1] && blocksAt[2] && blocksAt[3]))flag = true;
@@ -173,10 +182,10 @@ public class Chunk
 	}
 
 	public void hitBlock(int x, int y) {
-		int i = (y * 32) + x;
+		int i = (y*32)+x;
 		blocks[i].removeHealth(1);
-		System.out.println(blocks[i].getHealth());
-		if(blocks[i].getHealth() <= 0)
-			removeBlock(x,y);
+		if(blocks[i].getHealth()<=0)
+			removeBlock(x,y,false);
+
 	}
 }
