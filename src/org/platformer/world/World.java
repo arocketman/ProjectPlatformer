@@ -14,7 +14,6 @@ public abstract class World implements IDefaultGame
 {
 	public ArrayList<AABB> aabbPool = new ArrayList<AABB>();
 	public Chunk[] chunks = new Chunk[1024];
-	public Chunk[] backgroundChunks = new Chunk[1024];
 	
 	protected Random random;
 	private Chunk spawnChunk;
@@ -36,7 +35,6 @@ public abstract class World implements IDefaultGame
 			{
 				int i2 = (a * 32) + i;
 				chunks[i2] = new Chunk(i,a);
-				backgroundChunks[i2] = new Chunk(i,a);
 			}
 		}
 	}
@@ -58,10 +56,6 @@ public abstract class World implements IDefaultGame
 	{
 		return getChunk((int)Math.floor(x/(16*32)),(int)Math.floor(y/(16*32)));
 	}
-	public Chunk getBGChunkWorldPos(int x, int y)
-	{
-		return getBGChunk((int)Math.floor(x/(16*32)),(int)Math.floor(y/(16*32)));
-	}
 	
 	/**
 	 * Get a chunk with chunk positions
@@ -78,15 +72,6 @@ public abstract class World implements IDefaultGame
 		}
 		return chunks[i];
 	}
-	public Chunk getBGChunk(int chunkX, int chunkY)
-	{
-		int i = (chunkY * 32) + chunkX;
-		if(i < 0 || i >= backgroundChunks.length)
-		{
-			return null;
-		}
-		return backgroundChunks[i];
-	}
 	
 	/**
 	 * Get block from World + Relative Position
@@ -96,7 +81,7 @@ public abstract class World implements IDefaultGame
 	 * @param by - Relative Position
 	 * @return Block ID
 	 */
-	public int getBlock(int blockX, int blockY, int bx, int by)
+	public int getBlock(int blockX, int blockY, int bx, int by, boolean background)
 	{
 		Chunk chunk = this.getChunkWorldPos(blockX, blockY);
 		if(chunk != null)
@@ -107,7 +92,7 @@ public abstract class World implements IDefaultGame
 			if(y < 0)y=31-by;
 			if(x > 31)x=bx-31;
 			if(y > 31)y=by-31;
-			return chunk.getBlock(x,y);
+			return chunk.getBlock(x,y,background);
 		}
 		return -1;
 	}

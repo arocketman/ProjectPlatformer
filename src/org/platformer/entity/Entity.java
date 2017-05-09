@@ -97,12 +97,12 @@ public class Entity implements ITrackable
 		Random random = new Random();
 		int x = random.nextInt(32);
 		int y = 0;
-		int blockID = chunk.getBlock(x,31);
+		int blockID = chunk.getBlock(x,31,false);
 		if(blockID != -1)
 		{
 			for(int i=0;i<32;i++)
 			{
-				blockID = chunk.getBlock(x,31-i);
+				blockID = chunk.getBlock(x,31-i,false);
 				if(blockID == -1)
 				{
 					y = 31-i;

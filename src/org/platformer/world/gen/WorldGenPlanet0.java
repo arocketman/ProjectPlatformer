@@ -89,8 +89,7 @@ public class WorldGenPlanet0 implements IWorldGen
 						float h2 = (float) Noise.noise((float) worldPosX / (frequency*0.95), (float) worldPosY / (frequency*0.5)); 
 						float h3 = (float) Noise.noise((float) worldPosX / (frequency*0.75), (float) worldPosY / (frequency*1.5)); 
 						Chunk chunk = world.getChunkWorldPos(worldPosX, worldPosY);
-						Chunk bgchunk = world.getBGChunkWorldPos(worldPosX, worldPosY);
-						if(chunk != null && bgchunk != null)
+						if(chunk != null)
 						{
 							int blockID = -2;
 
@@ -136,7 +135,7 @@ public class WorldGenPlanet0 implements IWorldGen
 							
 							if(blockID != -2)
 							{
-								bgchunk.placeBlock(x, y, RegisterBlocks.get(blockID));
+								chunk.placeBlock(x, y, RegisterBlocks.get(blockID), true);
 							}
 							
 							if(flag)
@@ -148,7 +147,7 @@ public class WorldGenPlanet0 implements IWorldGen
 									if(xx < 0)xx = 32+xx;
 									if(yy < 0)yy = 32+yy;
 
-									chunk.placeBlock(xx, yy, RegisterBlocks.get(blockID));
+									chunk.placeBlock(xx, yy, RegisterBlocks.get(blockID), false);
 								}
 							}
 							
@@ -158,7 +157,7 @@ public class WorldGenPlanet0 implements IWorldGen
 								if(y == 31)
 								{
 									Block block = layers.get(layers.size()-1).block; //Get last layer
-									chunk.placeBlock(x, y, block);
+									chunk.placeBlock(x, y, block, false);
 								}
 							}
 						}	

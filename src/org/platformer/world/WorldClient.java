@@ -104,12 +104,12 @@ public class WorldClient extends WorldServer
 		if(i == 1)
 		{
 			if(localPlayer.colBox.isNearby(mouseX,mouseY))
-				chunk.placeBlock(x, y, RegisterBlocks.dirt);
+				chunk.placeBlock(x, y, RegisterBlocks.dirt, false);
 		}
 		else if(i == 0)
 		{
 			if(chunk.getBlockAABB(x,y) != null && localPlayer.colBox.isNearby(chunk.getBlockAABB(x,y)))
-				chunk.removeBlock(x, y);
+				chunk.removeBlock(x, y, false);
 		}
 		// testing the add of an item to the player's inventory
 		// on click, removes the item and puts into the player's inventory
@@ -199,7 +199,7 @@ public class WorldClient extends WorldServer
 						{
 							int by = a/32;
 							int bx = (a)-(by*32);
-							int id2 = backgroundChunks[i].blocks[a];
+							int id2 = chunks[i].backgroundBlocks[a];
 							int id = chunks[i].blocks[a];
 							if(id2 != -1 && id == -1)
 							{
@@ -248,7 +248,6 @@ public class WorldClient extends WorldServer
 						}
 						glEndList();
 						chunks[i].onUpdate(this);
-						backgroundChunks[i].onUpdate(this);
 					}
 					else
 					{
@@ -259,7 +258,6 @@ public class WorldClient extends WorldServer
 				else
 				{
 					if(!chunks[i].needsUpdate)chunks[i].needsUpdate = true;
-					if(!backgroundChunks[i].needsUpdate)backgroundChunks[i].needsUpdate = true;
 				}
 			}
 		}
