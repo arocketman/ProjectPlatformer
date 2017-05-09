@@ -18,7 +18,9 @@ public class Entity implements ITrackable
 	public int currentAnimation;
 	public int moveSpeed;
 	public boolean walkingLeft;
-	
+
+	private Chunk currentChunk;		// the chunk where the entity is currently located
+
 	public Entity(World world, String hash)
 	{
 		this.world = world;
@@ -36,6 +38,25 @@ public class Entity implements ITrackable
 	public void update()
 	{
 		doCollision();
+		updateChunkPosition();
+	}
+
+	/**
+	 * Updates the entity's position relative to the chunks in the world.
+	 */
+	protected void updateChunkPosition()
+	{
+
+		if(currentChunk != null)
+		{
+
+			currentChunk.removeEntity(this);
+
+		}
+
+		currentChunk = world.getChunkWorldPos((int)posX, (int)posY);
+		currentChunk.placeEntity(this);
+
 	}
 
 	private void doCollision()
@@ -45,21 +66,21 @@ public class Entity implements ITrackable
 		if(Math.abs(motionX) < 0.001f)motionX = 0f;
 		moveSpeed = (int)(motionX*2);
 		if(motionX != 0f)walkingLeft = (motionX < 0f);
-		
+
 		colBox.applyMotion(this,motionX,motionY);
-		
+
 		if(posY == colBox.posY || onGround){motionY = 0f;}
 		posX = colBox.posX;
 		posY = colBox.posY;
-		
+
 		isFalling = (motionY > 0);
-		
+
 		motionY+=0.3f;
 		motionY*=1.005f;
-		
+
 		motionY=Math.min(motionY, 15f);
 	}
-	
+
 
 	protected void findWorldSpawn()
 	{
