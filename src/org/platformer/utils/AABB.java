@@ -5,6 +5,8 @@ import org.platformer.world.chunk.Chunk;
 
 public class AABB
 {
+
+	private static final float NEARBY_DISTANCE = 64f;
 	public float minX, minY, maxX, maxY, posX, posY;
 	
 	public AABB(float minX, float minY, float maxX, float maxY)
@@ -240,5 +242,27 @@ public class AABB
 		aabb.posX = posX;
 		aabb.posY = posY;
 		return aabb;
+	}
+
+	/**
+	 * Checks wheter or not this AABB is in range of the passed AABB.
+	 * As of right now the threshhold distance is specified in a constant defined in this same class.
+	 * @param blockAABB the AABB you want to check is nearby
+	 * @return true if the two AABB are nearby, false otherwise.
+     */
+	public boolean isNearby(AABB blockAABB) {
+		return Math.abs(blockAABB.posX - this.posX) <= NEARBY_DISTANCE
+				&& Math.abs(blockAABB.posY - this.posY) <= NEARBY_DISTANCE;
+	}
+
+	/**
+	 * Refer to {@link #isNearby(AABB)}.
+	 * @param posX the X coordinate of the passed object to check against
+	 * @param posY the Y coordinate of the passed object to check against
+	 * @return true if the two objects are nearby, false otherwise.
+     */
+	public boolean isNearby(float posX , float posY) {
+		return Math.abs(posX - this.posX) <= NEARBY_DISTANCE
+				&& Math.abs(posY - this.posY) <= NEARBY_DISTANCE;
 	}
 }

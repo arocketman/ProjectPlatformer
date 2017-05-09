@@ -101,11 +101,13 @@ public class WorldClient extends WorldServer
 
 		if(i == 1)
 		{
-			chunk.placeBlock(x, y, RegisterBlocks.dirt);
+			if(localPlayer.colBox.isNearby(mouseX,mouseY))
+				chunk.placeBlock(x, y, RegisterBlocks.dirt);
 		}
 		else if(i == 0)
 		{
-			chunk.removeBlock(x, y);
+			if(chunk.getBlockAABB(x,y) != null && localPlayer.colBox.isNearby(chunk.getBlockAABB(x,y)))
+				chunk.removeBlock(x, y);
 		}
 		// testing the add of an item to the player's inventory
 		// on click, removes the item and puts into the player's inventory
