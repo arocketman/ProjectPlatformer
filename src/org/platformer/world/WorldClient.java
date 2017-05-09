@@ -11,12 +11,12 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.platformer.Data.Inventory;
+import org.platformer.Data.Item;
+import org.platformer.Data.PlayerConfiguration;
 import org.platformer.Main;
 import org.platformer.block.Block;
-import org.platformer.entity.Entity;
-import org.platformer.entity.EntityPlayer;
-import org.platformer.entity.EntityPlayerLocal;
-import org.platformer.entity.EntityTracker;
+import org.platformer.entity.*;
 import org.platformer.entity.EntityTracker.Map;
 import org.platformer.register.RegisterBlocks;
 import org.platformer.register.RegisterRenders;
@@ -27,19 +27,21 @@ import org.platformer.utils.AABB;
 import org.platformer.utils.RenderUtils;
 import org.platformer.world.chunk.Chunk;
 
+import java.util.Iterator;
+
 public class WorldClient extends WorldServer
 {
 	private Image terrain = RegisterTextures.getTexture("terrain");
 	private EntityPlayer localPlayer;
 	private Camera camera;
-	
+
 	private int glGenList = -99;
-	
+
 	public WorldClient(Long seed)
 	{
 		super(seed);
 	}
-	
+
 	@Override
 	public void init()
 	{
@@ -49,20 +51,30 @@ public class WorldClient extends WorldServer
 		camera.smoothMovement = true;
 		super.init();
 	}
-	
+
 	@Override
 	public void postWorldGenerator()
 	{
-		localPlayer = new EntityPlayerLocal(this,"Username");
+		//localPlayer = new EntityPlayerLocal(this,"Username");
+
+		// testing the add of a player with a PlayerConfiguration
+		PlayerConfiguration config = new PlayerConfiguration(5, 5, new Inventory(2));
+		localPlayer = new EntityPlayerLocal(this,"Username", config);
+
+		// testing the add of an item to the world
+		EntityItem item = new EntityItem(this, "item", new Item("item", "missingtexture"));
+		EntityItem item2 = new EntityItem(this, "item2", new Item("item2", "missingtexture"));
+		EntityItem item3 = new EntityItem(this, "item3", new Item("item3", "missingtexture"));
 	}
-	
+
 	@Override
 	public void update()
 	{
 		super.update();
-		
+
 		if(Mouse.isButtonDown(0)) clickMouse(0);
 		if(Mouse.isButtonDown(1)) clickMouse(1);
+		if(Mouse.isButtonDown(2)) clickMouse(2); // testing the add of an item to the inventory
 	}
 
 	/**
@@ -80,17 +92,60 @@ public class WorldClient extends WorldServer
 		int y = (int) Math.floor((mouseY)/16f)-(chunkY*(32));
 		Chunk chunk = getChunk(chunkX,chunkY);
 		if(chunk == null)return;
-		
+
 		if(i == 1)
 		{
 			chunk.placeBlock(x, y, RegisterBlocks.dirt);
 		}
-		else
+		else if(i == 0)
 		{
 			chunk.removeBlock(x, y);
 		}
+		// testing the add of an item to the player's inventory
+		// on click, removes the item and puts into the player's inventory
+		else if(i == 2)
+		{
+
+			AABB mouseAABB = new AABB(1,1);
+			mouseAABB.posX = mouseX;
+			mouseAABB.posY = mouseY;
+
+			Iterator<Entity> entIterator = chunk.getEntities().iterator();
+
+			while(entIterator.hasNext()) {
+
+				Entity entity = entIterator.next();
+
+				if(mouseAABB.intersects(entity.colBox))
+				{
+
+					if (entity instanceof EntityItem)
+					{
+
+						EntityItem entItem = (EntityItem) entity;
+
+						if(localPlayer.getPlayerConfiguration().getInventory().isFull())
+						{
+
+							System.out.println("Player's inventory is full, couldn't add item: " + entItem.getItem() + " to the inventory.");
+
+						}
+						else
+						{
+
+							localPlayer.getPlayerConfiguration().getInventory().addItem(entItem.getItem());
+							entIterator.remove();
+							EntityTracker.removeEntity(entity);
+							System.out.println("\nThe item " + entItem.getItem() + " has been added to the player's inventory.");
+							System.out.println("Player's inventory: " + localPlayer.getPlayerConfiguration().getInventory().getItems());
+
+						}
+					}
+				}
+			}
+		}
 	}
-	
+
 	@Override
 	public void render(Graphics g)
 	{
@@ -101,7 +156,7 @@ public class WorldClient extends WorldServer
 		g.resetTransform();
 		super.render(g);
 	}
-	
+
 	/**
 	 * Render all chunks
 	 * @param g - Graphics
@@ -141,7 +196,7 @@ public class WorldClient extends WorldServer
 								Block block = RegisterBlocks.get(id2);
 								float blockX = chunkX+(bx*16);
 								float blockY = chunkY+(by*16);
-								
+
 								int bid = block.getID();
 								int rowX = bid % 16;
 								int rowY = bid / 16;
@@ -161,7 +216,7 @@ public class WorldClient extends WorldServer
 								Block block = RegisterBlocks.get(id);
 								float blockX = chunkX+(bx*16);
 								float blockY = chunkY+(by*16);
-								
+
 								int bid = block.getID();
 								int rowX = bid % 16;
 								int rowY = bid / 16;
@@ -174,7 +229,7 @@ public class WorldClient extends WorldServer
 								RenderUtils.renderBlock(new float[]{blockX-0.0125f, blockY-0.0125f, blockX+16+0.0125f, blockY+16+0.0125f}, new float[]{uvMinX,uvMinY,uvMaxX,uvMaxY},block);
 								GL11.glColor4f(1f, 1f, 1f, 1f);
 							}
-							
+
 							AABB box = chunks[i].aabbPool[a];
 							if(box != null)
 							{
@@ -199,13 +254,13 @@ public class WorldClient extends WorldServer
 			}
 		}
 		/**
-		float[] mouse = getMouseInWorld();
-		float mouseX = mouse[0]-8;
-		float mouseY = mouse[1]-8;
-		int chunkX = (int) Math.floor(mouseX/(16*32));
-		int chunkY = (int) Math.floor(mouseY/(16*32));
-		g.drawRect(chunkX*(16*32), chunkY*(16*32), (16*32), (16*32));
-		*/
+		 float[] mouse = getMouseInWorld();
+		 float mouseX = mouse[0]-8;
+		 float mouseY = mouse[1]-8;
+		 int chunkX = (int) Math.floor(mouseX/(16*32));
+		 int chunkY = (int) Math.floor(mouseY/(16*32));
+		 g.drawRect(chunkX*(16*32), chunkY*(16*32), (16*32), (16*32));
+		 */
 	}
 
 	/**
@@ -223,7 +278,7 @@ public class WorldClient extends WorldServer
 		}
 		camera.transform(g);
 	}
-	
+
 	/**
 	 * Render all entities by getting the mapped Renderer for them.
 	 * @param g - Graphics
@@ -276,7 +331,7 @@ public class WorldClient extends WorldServer
 		int height = Main.displayHeight;
 		return getWorldCoordinates(Mouse.getX(),height-Mouse.getY());
 	}
-	
+
 	/**
 	 * NOTE: Not properly working with scale - TODO Fix insideCameraView
 	 * @param posX - object position
@@ -289,7 +344,7 @@ public class WorldClient extends WorldServer
 	private boolean insideCameraView(float posX, float posY, float width, float height, boolean centered)
 	{
 		float scale = 1f/camera.scaleSmooth;
-		
+
 		int halfWidth = Main.displayWidth/2;
 		int halfHeight = Main.displayHeight/2;
 		float[] topleft = getWorldCoordinates(-halfWidth, -halfHeight);
@@ -298,7 +353,7 @@ public class WorldClient extends WorldServer
 		topleft[1]=camera.translateYSmooth-(halfHeight*scale);
 		bottomright[0]=camera.translateXSmooth+((halfWidth)*scale)+halfWidth;
 		bottomright[1]=camera.translateYSmooth+((halfHeight)*scale)+halfHeight;
-		
+
 		float[] posTopLeft = new float[]{posX+(width),posY+(height)};
 		float[] posBottomRight = new float[]{posX,posY};
 		if(centered)
@@ -306,7 +361,7 @@ public class WorldClient extends WorldServer
 			posTopLeft = new float[]{posX+(width/2),posY+(height/2f)};
 			posBottomRight =new float[]{posX-(width/2),posY-(height/2f)};
 		}
-		
+
 		return (posTopLeft[0] > topleft[0] && posTopLeft[1] > topleft[1] && posBottomRight[0] < bottomright[0] && posBottomRight[1] < bottomright[1]);
 	}
 }
