@@ -15,6 +15,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.platformer.Main;
 import org.platformer.block.Block;
+import org.platformer.data.Equipment;
 import org.platformer.data.Inventory;
 import org.platformer.data.Item;
 import org.platformer.data.PlayerConfiguration;
@@ -64,7 +65,7 @@ public class WorldClient extends WorldServer
 		//localPlayer = new EntityPlayerLocal(this,"Username");
 
 		// testing the add of a player with a PlayerConfiguration
-		PlayerConfiguration config = new PlayerConfiguration(5, 5, new Inventory(2));
+		PlayerConfiguration config = new PlayerConfiguration(5, 5, new Inventory(2), new Equipment());
 		localPlayer = new EntityPlayerLocal(this,"Username", config);
 
 		// testing the add of an item to the world
