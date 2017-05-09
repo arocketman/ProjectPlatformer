@@ -17,6 +17,7 @@ public class RenderPlayer extends RenderEntity
 		{
 			g.pushTransform();
 			g.translate(ent.posX, ent.posY);
+			g.scale(0.75f, 0.75f);
 			entityPlayer.animationEntity.render(g);
 			g.popTransform();
 		}
