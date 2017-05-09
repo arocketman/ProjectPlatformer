@@ -1,5 +1,7 @@
 package org.platformer.entity;
 
+import org.platformer.register.RegisterRenders;
+
 import java.util.HashMap;
 
 public class EntityTracker
@@ -15,7 +17,11 @@ public class EntityTracker
 	 */
 	public static void addEntityTracker(Entity ent)
 	{
+
 		entityMap.put(ent.getHash(), ent);
+
+		RegisterRenders.addRenderEntity(ent);
+
 	}
 
 	/**
@@ -38,7 +44,7 @@ public class EntityTracker
 		entityMap.remove(ent.getHash());
 		ent = null;
 	}
-	
+
 	/**
 	 * Remove entity from entity tracker map
 	 * @param ent
