@@ -8,7 +8,9 @@ import org.platformer.utils.AABB;
 import org.platformer.world.World;
 import org.platformer.world.chunk.Chunk;
 import org.platformer.input.Mouse;
+import org.platformer.register.RegisterBlocks;
 import org.platformer.world.chunk.Chunk;
+import org.platformer.utils.Handler;
 
 public class EntityPlayer extends Entity
 {
@@ -34,7 +36,9 @@ public class EntityPlayer extends Entity
 	@Override
 	public void update()
 	{
-		if(animationEntity != null)animationEntity.update();
+		if(animationEntity != null)
+			animationEntity.update();
+		checkUserInput();
 		super.update();
 	}
 	
@@ -50,19 +54,26 @@ public class EntityPlayer extends Entity
 	}
 	
 	private void placeBlock() {
+		float[] mousePos = Mouse.getMouseLocation();
+		int chunkX = (int) Math.floor(mousePos[0]/(16*32));
+		int chunkY = (int) Math.floor(mousePos[1]/(16*32));
+		int x = (int) Math.floor((mousePos[0])/16f)-(chunkX*(32));
+		int y = (int) Math.floor((mousePos[1])/16f)-(chunkY*(32));
+		Chunk chunk = Handler.getWorld().getChunk(chunkX, chunkY);
+		
 		if (isWithinRange()) {
-			int chunkX = (int) Math.floor(mouseX/(16*32));
-			int chunkY = (int) Math.floor(mouseY/(16*32));
-			int x = (int) Math.floor((mouseX)/16f)-(chunkX*(32));
-			int y = (int) Math.floor((mouseY)/16f)-(chunkY*(32));
-			Chunk chunk = Chunk.getChunk(chunkX,chunkY);
-		} else
-			return;
+			if(chunk == null)
+				return;
+			
+			chunk.placeBlock(x, y, RegisterBlocks.dirt);
+		}
 	}
 	
 	private boolean isWithinRange() {
-		if (Mouse.getMouseLocation()[0] > Math.abs(this.posX) + 20 &&
-				Mouse.getMouseLocation()[1] > Math.abs(this.posY) + 20)
+		if (Mouse.getMouseLocation()[0] > this.posX + 20 && Mouse.getMouseLocation()[1] > this.posY + 20 ||
+				Mouse.getMouseLocation()[0] > this.posX + 20 && Mouse.getMouseLocation()[1] < this.posY + 20 ||
+				Mouse.getMouseLocation()[0] < this.posX + 20 && Mouse.getMouseLocation()[1] > this.posY + 20 ||
+				Mouse.getMouseLocation()[0] < this.posX + 20 && Mouse.getMouseLocation()[1] < this.posY + 20)
 			return true;
 		else
 			return false;

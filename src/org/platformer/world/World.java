@@ -9,6 +9,7 @@ import org.platformer.entity.EntityTracker.Map;
 import org.platformer.utils.AABB;
 import org.platformer.utils.IDefaultGame;
 import org.platformer.world.chunk.Chunk;
+import org.platformer.utils.Handler;
 
 public abstract class World implements IDefaultGame
 {
@@ -39,6 +40,8 @@ public abstract class World implements IDefaultGame
 				backgroundChunks[i2] = new Chunk(i,a);
 			}
 		}
+		
+		Handler.setChunks(chunks);
 	}
 	
 	/**
@@ -78,6 +81,12 @@ public abstract class World implements IDefaultGame
 		}
 		return chunks[i];
 	}
+	
+	// Testing
+	public Chunk[] getChunks() {
+		return chunks;
+	}
+	
 	public Chunk getBGChunk(int chunkX, int chunkY)
 	{
 		int i = (chunkY * 32) + chunkX;

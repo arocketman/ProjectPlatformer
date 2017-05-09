@@ -60,10 +60,6 @@ public class WorldClient extends WorldServer
 	public void update()
 	{
 		super.update();
-		
-		Handler.
-		if(Mouse.isButtonDown(0)) clickMouse(0);
-		if(Mouse.isButtonDown(1)) clickMouse(1);
 	}
 
 	/**
@@ -199,7 +195,7 @@ public class WorldClient extends WorldServer
 				}
 			}
 		}
-		/**
+		/*
 		float[] mouse = getMouseInWorld();
 		float mouseX = mouse[0]-8;
 		float mouseY = mouse[1]-8;
