@@ -20,8 +20,6 @@ public class EntityTracker
 
 		entityMap.put(ent.getHash(), ent);
 
-		RegisterRenders.addRenderEntity(ent);
-
 	}
 
 	/**
