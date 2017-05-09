@@ -1,5 +1,8 @@
 package org.platformer.input;
 
+import org.platformer.Main;
+import org.platformer.world.WorldClient;
+
 public class Mouse {
 	/** 
 	 * The coordinates of the mouse relative to the screen <br>
@@ -14,12 +17,19 @@ public class Mouse {
 	 * */
 	private float[] relativeCoordinates = new float[2];
 	
-	public void getMouseLocation() {
-		
+	public int[] getActualCoordinates() {
+		return actualCoordinates;
 	}
+	
+	public float[] getRelativeLocation() {
+		return relativeCoordinates;
+	}
+	
+	
 	
 	public void update() {
 		actualCoordinates[0] = org.lwjgl.input.Mouse.getX();
 		actualCoordinates[1] = org.lwjgl.input.Mouse.getY();
+		relativeCoordinates = WorldClient.getWorld().getWorldCoordinates(actualCoordinates[0], Main.displayHeight - actualCoordinates[1]);
 	}
 }
