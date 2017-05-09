@@ -96,9 +96,9 @@ public class EntityPlayer extends Entity
 			return;
 		
 		if (playerMouse.isLeftClicked())
-			chunk.removeBlock(x, y);
+			chunk.removeBlock(x, y, false);
 		if (playerMouse.isRightClicked())
-			chunk.placeBlock(x, y, RegisterBlocks.dirt);
+			chunk.placeBlock(x, y, RegisterBlocks.dirt, false);
 	}
 	
 	@Override
