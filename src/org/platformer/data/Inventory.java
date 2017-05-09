@@ -99,4 +99,10 @@ public class Inventory
 
     }
 
+    public boolean isEmpty() {
+
+        return items.size() == 0;
+
+    }
+
 }
